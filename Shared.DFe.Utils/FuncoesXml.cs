@@ -43,9 +43,9 @@ namespace DFe.Utils
 {
 	public static class FuncoesXml
 	{
-		private static readonly object _lock = new object();
 
 		// https://github.com/ZeusAutomacao/DFe.NET/issues/610
+		private static readonly object _lock = new object();
 		private static volatile Hashtable _cacheSerializers = new Hashtable();
 
 		/// <summary>
