@@ -41,20 +41,19 @@ using System.Xml.Serialization;
 
 namespace DFe.Utils
 {
-	public static class FuncoesXml
-	{
+    public static class FuncoesXml
+    {
 
-		// https://github.com/ZeusAutomacao/DFe.NET/issues/610
-		private static readonly object _lock = new object();
-		private static volatile Hashtable _cacheSerializers = new Hashtable();
+        // https://github.com/ZeusAutomacao/DFe.NET/issues/610
+        private static readonly Hashtable CacheSerializers = new Hashtable();
 
-		/// <summary>
-		///     Serializa a classe passada para uma string no form
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="objeto"></param>
-		/// <returns></returns>
-		public static string ClasseParaXmlString<T>(T objeto)
+        /// <summary>
+        ///     Serializa a classe passada para uma string no form
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objeto"></param>
+        /// <returns></returns>
+        public static string ClasseParaXmlString<T>(T objeto)
         {
             XElement xml;
             var keyNomeClasseEmUso = typeof(T).FullName;
@@ -225,18 +224,16 @@ namespace DFe.Utils
         // https://github.com/ZeusAutomacao/DFe.NET/issues/610
         private static XmlSerializer BuscarNoCache(string chave, Type type)
         {
-			lock (_lock)
-			{
-				if (_cacheSerializers.Contains(chave))
-				{
-					return (XmlSerializer)_cacheSerializers[chave];
-				}
+            if (CacheSerializers.Contains(chave))
+            {
+                return (XmlSerializer)CacheSerializers[chave];
+            }
 
-				var ser = XmlSerializer.FromTypes(new[] { type })[0];
-				_cacheSerializers.Add(chave, ser);
 
-				return ser;
-			}
+            var ser = XmlSerializer.FromTypes(new[] { type })[0];
+            CacheSerializers.Add(chave, ser);
+
+            return ser;
         }
     }
 }
