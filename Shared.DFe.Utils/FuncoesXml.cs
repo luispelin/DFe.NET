@@ -43,7 +43,7 @@ namespace DFe.Utils
 {
     public static class FuncoesXml
     {
-		// Preparando lock
+		// Preparando lock para ambiente multithread
 		private static readonly object _lock = new object();
 
 		// https://github.com/ZeusAutomacao/DFe.NET/issues/610
