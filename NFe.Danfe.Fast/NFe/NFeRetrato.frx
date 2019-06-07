@@ -153,15 +153,33 @@ namespace FastReport
             break;
         }        
       }
+
+      string strNFref = "";
+      var nfref = Report.GetDataSource(&quot;NFe.NFe.infNFe.ide.NFref&quot;);
+      nfref.Init();
+
+      while (nfref.HasMoreRows)
+      {
+        string strUmaNFref = ((String)Report.GetColumnValue(&quot;NFe.NFe.infNFe.ide.NFref.refNFe&quot;));
+        strUmaNFref = Regex.Replace(strUmaNFref, &quot;.{4}&quot;, &quot;$0 &quot;) + Environment.NewLine;
+
+        strNFref += strUmaNFref;
+        nfref.Next();
+      }
       
-      string infAdicionais = (string)Report.GetColumnValue(&quot;NFe.NFe.infNFe.infAdic.infCpl&quot;) + Environment.NewLine + (string)Report.GetColumnValue(&quot;NFe.NFe.infNFe.infAdic.infAdFisco&quot;);
+      string infAdicionais = (string)Report.GetColumnValue(&quot;NFe.NFe.infNFe.infAdic.infCpl&quot;) + Environment.NewLine;
+      
+      if (!string.IsNullOrEmpty(strNFref))
+      {
+        infAdicionais = &quot;NF-e Referenciada: &quot; + strNFref + infAdicionais;
+      }
       
       if((bool)Report.GetParameterValue(&quot;QuebrarLinhasObservacao&quot;))
       {  
         infAdicionais = infAdicionais.Replace(&quot;;&quot;, Environment.NewLine);
       }
       
-      TextInfAdicionais.Text = infAdicionais;      
+      TextInfAdicionais.Text = infAdicionais;
       memContInfAdicionais.Text = string.Empty;
       
       string[] lines = infAdicionais.Split(new string[]{ Environment.NewLine, &quot;\n&quot; }, StringSplitOptions.None);
@@ -172,6 +190,9 @@ namespace FastReport
         TextInfAdicionais.Text = string.Join(Environment.NewLine, lines.Take(LINHAS_DADOS_ADICIONAIS-1).ToArray());      
         memContInfAdicionais.Text = string.Join(Environment.NewLine, lines.Skip(LINHAS_DADOS_ADICIONAIS-1).ToArray());
       }
+      
+      // Informacoes de interesse do fisco
+      TextInfAdFisco.Text = (string)Report.GetColumnValue(&quot;NFe.NFe.infNFe.infAdic.infAdFisco&quot;);
     } 
 
     private void DadosProdutos_BeforePrint(object sender, EventArgs e)
@@ -1035,7 +1056,7 @@ namespace FastReport
   </Dictionary>
   <ReportPage Name="Page1" LeftMargin="6" TopMargin="7" RightMargin="7" BottomMargin="7">
     <ReportTitleBand Name="Canhoto" Width="744.66" Height="79.37">
-      <TextObject Name="Memo2" Width="642.52" Height="37.8" Border.Lines="All" Border.Width="0.5" Text="Recebemos de [NFe.NFe.infNFe.emit.xNome] os produtos e/ou serviços constantes da Nota Fiscal Eletrônica indicada ao lado. &#13;&#10;[ResumoCanhoto]" Padding="2, 2, 2, 2" WordWrap="false" Font="Times New Roman, 7pt"/>
+      <TextObject Name="Memo2" Width="642.52" Height="37.8" Border.Lines="All" Border.Width="0.5" Text="Recebemos de [NFe.NFe.infNFe.emit.xNome] os produtos e/ou serviços constantes da Nota Fiscal Eletrônica indicada ao lado. &#13;&#10;[ResumoCanhoto]" Padding="2, 2, 2, 2" Font="Times New Roman, 7pt"/>
       <TextObject Name="Memo3" Left="143.62" Top="37.8" Width="498.9" Height="30.24" Border.Lines="All" Border.Width="0.5" Text="IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR" Padding="2, 2, 2, 2" Font="Times New Roman, 6pt"/>
       <TextObject Name="Memo4" Top="37.8" Width="143.62" Height="30.24" Border.Lines="All" Border.Width="0.5" Text="DATA DO RECEBIMENTO" Padding="2, 2, 2, 2" Font="Times New Roman, 6pt"/>
       <LineObject Name="Line1" Top="73.81" Width="744.57" Border.Style="Dot" Border.Width="0.5"/>
@@ -1257,7 +1278,7 @@ namespace FastReport
           <TableColumn Name="prodAlqIPI" Width="20.79"/>
           <TableRow Name="prodRow" Height="11.34" AutoSize="true">
             <TableCell Name="prodCodigoCell" Border.Lines="Left, Right, Bottom" Border.LeftLine.Width="0.5" Border.RightLine.Width="0.5" Border.BottomLine.Style="Dot" Border.BottomLine.Width="0.5" Text="[NFe.NFe.infNFe.det.prod.cProd]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 6pt"/>
-            <TableCell Name="prodNomeCell" Border.Lines="Right, Bottom" Border.LeftLine.Width="0.5" Border.TopLine.Width="0.5" Border.RightLine.Width="0.5" Border.BottomLine.Style="Dot" Border.BottomLine.Width="0.5" Text="[NFe.NFe.infNFe.det.prod.xProd][IIf([NFe.NFe.infNFe.det.infAdProd] == null || [NFe.NFe.infNFe.det.infAdProd] == &quot;&quot;, &quot;&quot;, &quot; &quot; + [NFe.NFe.infNFe.det.infAdProd])]" HorzAlign="Justify" Font="Times New Roman, 6pt"/>
+            <TableCell Name="prodNomeCell" Border.Lines="Right, Bottom" Border.LeftLine.Width="0.5" Border.TopLine.Width="0.5" Border.RightLine.Width="0.5" Border.BottomLine.Style="Dot" Border.BottomLine.Width="0.5" Text="[NFe.NFe.infNFe.det.prod.xProd][IIf([NFe.NFe.infNFe.det.infAdProd] == null || [NFe.NFe.infNFe.det.infAdProd] == &quot;&quot;, &quot;&quot;, &quot; &quot; + Environment.NewLine + [NFe.NFe.infNFe.det.infAdProd])]" HorzAlign="Justify" Font="Times New Roman, 6pt"/>
             <TableCell Name="prodNCMCell" Border.Lines="Right, Bottom" Border.LeftLine.Width="0.5" Border.TopLine.Width="0.5" Border.RightLine.Width="0.5" Border.BottomLine.Style="Dot" Border.BottomLine.Width="0.5" Text="[NFe.NFe.infNFe.det.prod.NCM]" Padding="1, 1, 1, 1" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 6pt"/>
             <TableCell Name="prodOriginCell" Border.Lines="Right, Bottom" Border.LeftLine.Width="0.5" Border.TopLine.Width="0.5" Border.RightLine.Width="0.5" Border.BottomLine.Style="Dot" Border.BottomLine.Width="0.5" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 6pt"/>
             <TableCell Name="prodCFOPCell" Border.Lines="Right, Bottom" Border.LeftLine.Width="0.5" Border.TopLine.Width="0.5" Border.RightLine.Width="0.5" Border.BottomLine.Style="Dot" Border.BottomLine.Width="0.5" Text="[NFe.NFe.infNFe.det.prod.CFOP]" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 6pt"/>
@@ -1284,7 +1305,7 @@ namespace FastReport
       <TextObject Name="Text155" Top="21.8" Width="470.06" Height="111.51" Border.Lines="All" Border.Width="0.5" Text="INFORMAÇÕES COMPLEMENTARES" Padding="2, 2, 2, 0" Font="Times New Roman, 5pt, style=Bold"/>
       <TextObject Name="Text156" Left="470.5" Top="21.8" Width="274.06" Height="111.51" Border.Lines="All" Border.Width="0.5" Text="RESERVADO AO FISCO" Padding="2, 2, 2, 0" Font="Times New Roman, 5pt, style=Bold"/>
       <TextObject Name="TextInfAdicionais" Left="1.45" Top="35.25" Width="468.5" Height="95.95" Font="Arial, 8pt"/>
-      <TextObject Name="Text37" Left="472.5" Top="35.25" Width="264.6" Height="95.95" Font="Arial, 8pt"/>
+      <TextObject Name="TextInfAdFisco" Left="472.5" Top="35.25" Width="264.6" Height="95.95" Font="Arial, 8pt"/>
       <TextObject Name="Text157" Width="124.65" Height="9.35" Text="DADOS ADICIONAIS" Padding="0, 0, 0, 0" VertAlign="Center" Font="Times New Roman, 8pt, style=Bold"/>
       <ChildBand Name="PageFooter" Top="1090.35" Width="744.66" Height="14.12" Guides="0">
         <TextObject Name="memDataHora" Top="0.89" Width="445.98" Height="13.23" Text="DATA E HORA DA IMPRESSÃO: [FormatDateTime([Date], &quot;dd/MM/yyyy HH:mm:ss&quot;)]" Padding="2, 1, 2, 1" Font="Times New Roman, 6pt"/>
