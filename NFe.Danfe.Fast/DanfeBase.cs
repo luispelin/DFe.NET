@@ -1,3 +1,4 @@
+
 /********************************************************************************/
 /* Projeto: Biblioteca ZeusNFe                                                  */
 /* Biblioteca C# para emissão de Nota Fiscal Eletrônica - NFe e Nota Fiscal de  */
@@ -31,14 +32,15 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 
-using System.IO;
 using FastReport;
-using FastReport.Export.PdfSimple;
+using FastReport.Export.Image;
 using NFe.Danfe.Base;
+using System.Collections.Generic;
+using System.IO;
 
 namespace NFe.Danfe.Fast
 {
-    public class DanfeBase: IDanfe
+	public class DanfeBase: IDanfe
     {
         public Report Relatorio { get; protected set; }
 
@@ -82,15 +84,40 @@ namespace NFe.Danfe.Fast
 		/// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DANFE</param>
 		public void ExportarPdf(string arquivo)
         {
-            Relatorio.Prepare();
-            Relatorio.Export(new PDFSimpleExport(), arquivo);
+			//Relatorio.Compressed = true;
+			//Relatorio.Prepare();
+			//Relatorio.Export(new PDFSimpleExport(), arquivo);
+		}
+
+		public void ExportarPdf2Image(string arquivo)
+		{
+			Relatorio.Prepare();
+			Relatorio.Export(new ImageExport() { ImageFormat = ImageExportFormat.Png }, arquivo);
+		}
+
+		public void ExportarPdf(Stream outputStream)
+        {
+            //Relatorio.Prepare();
+            //Relatorio.Export(new PDFSimpleExport(), outputStream);
+            //outputStream.Position = 0;
         }
 
-        public void ExportarPdf(Stream outputStream)
-        {
-            Relatorio.Prepare();
-            Relatorio.Export(new PDFSimpleExport(), outputStream);
-            outputStream.Position = 0;
-        }
-    }
+		public IList<byte[]> ExportarPdf2Image()
+		{
+			IList<byte[]> lst = new List<byte[]>();
+			if (Relatorio.Prepare())
+			{
+				for (int i = 0; i < Relatorio.PreparedPages.Count; i++)
+				{
+					using (MemoryStream ms = new MemoryStream())
+					{
+						Relatorio.Export(new ImageExport() { ImageFormat = ImageExportFormat.Png, PageRange = PageRange.Current, CurPage = i + 1 }, ms);
+						lst.Add(ms.ToArray());
+					}
+				}
+			}
+
+			return lst;
+		}
+	}
 }

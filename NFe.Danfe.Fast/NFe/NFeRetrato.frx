@@ -161,17 +161,17 @@ namespace FastReport
       while (nfref.HasMoreRows)
       {
         string strUmaNFref = ((String)Report.GetColumnValue(&quot;NFe.NFe.infNFe.ide.NFref.refNFe&quot;));
-        strUmaNFref = Regex.Replace(strUmaNFref, &quot;.{4}&quot;, &quot;$0 &quot;) + Environment.NewLine;
+        strUmaNFref = Regex.Replace(strUmaNFref, &quot;.{4}&quot;, &quot;$0 &quot;);
 
-        strNFref += strUmaNFref;
+        strNFref += Environment.NewLine + &quot;NF-e Referenciada: &quot; + strUmaNFref;
         nfref.Next();
       }
       
-      string infAdicionais = (string)Report.GetColumnValue(&quot;NFe.NFe.infNFe.infAdic.infCpl&quot;) + Environment.NewLine;
+      string infAdicionais = (string)Report.GetColumnValue(&quot;NFe.NFe.infNFe.infAdic.infCpl&quot;);
       
       if (!string.IsNullOrEmpty(strNFref))
       {
-        infAdicionais = &quot;NF-e Referenciada: &quot; + strNFref + infAdicionais;
+        infAdicionais = infAdicionais + strNFref;
       }
       
       if((bool)Report.GetParameterValue(&quot;QuebrarLinhasObservacao&quot;))
