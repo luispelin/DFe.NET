@@ -102,7 +102,7 @@ namespace NFe.Danfe.Fast
             //outputStream.Position = 0;
         }
 
-		public IList<byte[]> ExportarPdf2Image()
+		public IList<byte[]> ExportarPdf2ImagePng()
 		{
 			IList<byte[]> lst = new List<byte[]>();
 			if (Relatorio.Prepare())
@@ -111,7 +111,38 @@ namespace NFe.Danfe.Fast
 				{
 					using (MemoryStream ms = new MemoryStream())
 					{
-						Relatorio.Export(new ImageExport() { ImageFormat = ImageExportFormat.Png, PageRange = PageRange.Current, CurPage = i + 1 }, ms);
+						Relatorio.Export(new ImageExport()
+						{
+							ImageFormat = ImageExportFormat.Png,
+							PageRange = PageRange.Current,
+							Resolution = 168,
+							CurPage = i + 1
+						}, ms);
+						lst.Add(ms.ToArray());
+					}
+				}
+			}
+
+			return lst;
+		}
+
+		public IList<byte[]> ExportarPdf2ImageJpeg()
+		{
+			IList<byte[]> lst = new List<byte[]>();
+			if (Relatorio.Prepare())
+			{
+				for (int i = 0; i < Relatorio.PreparedPages.Count; i++)
+				{
+					using (MemoryStream ms = new MemoryStream())
+					{
+						Relatorio.Export(new ImageExport()
+						{
+							ImageFormat = ImageExportFormat.Jpeg,
+							JpegQuality = 100,
+							Resolution = 168,
+							PageRange = PageRange.Current,
+							CurPage = i + 1
+						}, ms);
 						lst.Add(ms.ToArray());
 					}
 				}
