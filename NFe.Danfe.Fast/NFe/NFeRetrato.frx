@@ -38,7 +38,7 @@ namespace FastReport
       var chave = Substring(((String)Report.GetColumnValue(&quot;NFe.NFe.infNFe.Id&quot;)), 3);
       TextChaveAcesso.Text = Regex.Replace(chave, &quot;.{4}&quot;, &quot;$0 &quot;); 
       BarcodeChave.Text = chave;
-      poEmitLogo.Image = ObterLogo();
+      poEmitLogo.Image = ObterLogoSemDestruirStream();
       
       var contigenciaId = (string)Report.GetParameterValue(&quot;ContingenciaID&quot;);
       BarCodeContigencia.Visible = !string.IsNullOrEmpty(contigenciaId);
@@ -337,7 +337,18 @@ namespace FastReport
         var image = Image.FromStream(ms);
         return image;
       }
-    }       
+    }
+    
+    public Image ObterLogoSemDestruirStream()
+    {
+      byte[] logomarca = Report.GetParameterValue(&quot;Logo&quot;) as byte[];
+      
+      if (logomarca == null) return null;
+      
+      var ms = new MemoryStream(logomarca);
+      var image = Image.FromStream(ms);
+      return image;
+    }
 
     private void Imposto_BeforePrint(object sender, EventArgs e)
     {
