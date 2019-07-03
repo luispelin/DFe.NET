@@ -1344,7 +1344,7 @@ namespace FastReport
     <PageHeaderBand Name="PageHeader1" Width="740.88" Height="11.34"/>
     <DataBand Name="MasterData1" Top="13.63" Width="740.88" Height="124.72" CanGrow="true" CanShrink="true">
       <TextObject Name="Memo137" Width="740.79" Height="124.72" Border.Lines="All" Border.Width="0.5" GrowToBottom="true" Text="CONTINUACAO DAS INFORMAÇÕES COMPLEMENTARES" Padding="2, 2, 2, 2" Font="Times New Roman, 5pt"/>
-      <TextObject Name="memContInfAdicionais" Top="11" Width="738.9" Height="109.61" GrowToBottom="true" Padding="2, 2, 2, 2" Brackets="[%,%]" Font="Arial, 8pt"/>
+      <TextObject Name="memContInfAdicionais" Top="11" Width="738.9" Height="609.61" GrowToBottom="true" Padding="2, 2, 2, 2" Brackets="[%,%]" Font="Arial, 8pt"/>
     </DataBand>
   </ReportPage>
 </Report>
