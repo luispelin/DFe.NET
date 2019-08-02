@@ -60,6 +60,8 @@ namespace DFe.Utils
         private string _cacheId;
         private byte[] _arrayBytesArquivo;
 
+		public string[] ArrCNPJOuCPF { get; set; }
+
         /// <summary>
         /// Tipo de certificado a ser usado
         /// </summary>
