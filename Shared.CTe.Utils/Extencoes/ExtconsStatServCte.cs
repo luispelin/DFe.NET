@@ -31,6 +31,7 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 using System;
+using System.IO;
 using System.Xml;
 using CTe.Classes;
 using CTe.Classes.Servicos.Status;
@@ -42,17 +43,17 @@ namespace CTe.Utils.Extencoes
 {
     public static class ExtconsStatServCte
     {
-        public static void ValidarSchema(this consStatServCte consStatServCte)
+        public static void ValidarSchema(this consStatServCte consStatServCte, ConfiguracaoServico configuracaoServico = null)
         {
             var xmlValidacao = consStatServCte.ObterXmlString();
 
             switch (consStatServCte.versao)
             {
                 case versao.ve200:
-                    Validador.Valida(xmlValidacao, "consStatServCTe_v2.00.xsd");
+                    Validador.Valida(xmlValidacao, "consStatServCTe_v2.00.xsd", configuracaoServico);
                     break;
                 case versao.ve300:
-                    Validador.Valida(xmlValidacao, "consStatServCTe_v3.00.xsd");
+                    Validador.Valida(xmlValidacao, "consStatServCTe_v3.00.xsd", configuracaoServico);
                     break;
                 default:
                     throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
@@ -71,15 +72,15 @@ namespace CTe.Utils.Extencoes
             return FuncoesXml.ClasseParaXmlString(pedStatus);
         }
 
-        public static void SalvarXmlEmDisco(this consStatServCte statuServCte)
+        public static void SalvarXmlEmDisco(this consStatServCte statuServCte, ConfiguracaoServico configuracaoServico = null)
         {
-            var instanciaServico = ConfiguracaoServico.Instancia;
+            var instanciaServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
 
             if (instanciaServico.NaoSalvarXml()) return;
 
             var caminhoXml = instanciaServico.DiretorioSalvarXml;
-
-            var arquivoSalvar = caminhoXml + @"\" + DateTime.Now.ParaDataHoraString() + "-ped-sta.xml";
+            
+            var arquivoSalvar = Path.Combine(caminhoXml,  DateTime.Now.ParaDataHoraString() + "-ped-sta.xml");
 
             FuncoesXml.ClasseParaArquivoXml(statuServCte, arquivoSalvar);
         }

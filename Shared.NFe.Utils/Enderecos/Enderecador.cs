@@ -72,13 +72,14 @@ namespace NFe.Utils.Enderecos
             return new List<Estado> { Estado.AM, Estado.BA, Estado.CE, Estado.GO, Estado.MA, Estado.MS, Estado.MT, Estado.PA, Estado.PE, Estado.PR };
         }
 
-        /// <summary>
-        /// Lista de <see cref="Estado"/> que usam SVAN para NF-e
-        /// </summary>
-        /// <returns></returns>
-        public static List<Estado> EstadosQueUsamSvanParaNfe()
+		/// <summary>
+		/// Lista de <see cref="Estado"/> que usam SVAN para NF-e
+		/// Atenção! PA foi retirado da lista: http://sefa.pa.gov.br/index.php/noticias/15474-autorizacao
+		/// </summary>
+		/// <returns></returns>
+		public static List<Estado> EstadosQueUsamSvanParaNfe()
         {
-            return new List<Estado> { Estado.MA, Estado.PA };
+            return new List<Estado> { Estado.MA };
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace NFe.Utils.Enderecos
                 Estado.DF,
                 Estado.ES,
                 Estado.MA, //Somente NFCe. MA usa o SVAN para NFe. Rev: 09/09/2015
-                Estado.PA, //Somente NFCe. PA usa o SVAN para NFe. Rev: 09/09/2015
+                Estado.PA, //Somente NFCe. PA usa o SVAN para NFe. Rev: 09/09/2015 -> Mudança em 02/09/2019: http://sefa.pa.gov.br/index.php/noticias/15474-autorizacao
                 Estado.PB,
                 Estado.PE, //Somente NFCe. PE tem endereços próprios para NFe. Rev: 01/12/2017
                 Estado.PI,
@@ -1305,9 +1306,10 @@ namespace NFe.Utils.Enderecos
             {
                 foreach (var emissao in emissaoComum)
                 {
-                    #region NFe
+					#region NFe
 
-                    if (estado != Estado.BA & estado != Estado.MA & estado != Estado.PA & estado != Estado.PE) //Esses estados usam SVRS somente para NFCe, possuindo endereços próprios para NFe.
+					// Mudança para o PA, em 02/09/2019: http://sefa.pa.gov.br/index.php/noticias/15474-autorizacao
+					if (estado != Estado.BA & estado != Estado.MA & estado != Estado.PE) //Esses estados usam SVRS somente para NFCe, possuindo endereços próprios para NFe.
                     {
                         if (emissao != TipoEmissao.teEPEC)
                             addServico(eventoCceCanc, versao1, hom, emissao, estado, nfe, "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx");
@@ -1367,10 +1369,11 @@ namespace NFe.Utils.Enderecos
             {
                 foreach (var emissao in emissaoComum)
                 {
-                    #region NFe
+					#region NFe
 
-                    //Rev: 09/09/2015
-                    if (estado != Estado.BA & estado != Estado.MA & estado != Estado.PA & estado != Estado.PE) //Esses estados usam SVRS somente para NFCe, possuindo endereços próprios para NFe.
+					//Rev: 09/09/2015
+					// Mudança para o PA, em 02/09/2019: http://sefa.pa.gov.br/index.php/noticias/15474-autorizacao
+					if (estado != Estado.BA & estado != Estado.MA & estado != Estado.PE) //Esses estados usam SVRS somente para NFCe, possuindo endereços próprios para NFe.
                     {
                         if (emissao != TipoEmissao.teEPEC)
                             addServico(eventoCceCanc, versao1, prod, emissao, estado, nfe, "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx");

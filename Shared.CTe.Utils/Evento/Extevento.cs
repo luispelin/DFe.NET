@@ -32,6 +32,7 @@
 /********************************************************************************/
 
 using System;
+using System.IO;
 using System.Xml;
 using CTe.Classes;
 using CTe.Classes.Servicos.Evento;
@@ -59,27 +60,29 @@ namespace CTe.Utils.Evento
         ///     Assina um objeto evento
         /// </summary>
         /// <param name="eventoCTe"></param>
+        /// <param name="configuracaoServico"></param>
         /// <returns>Retorna um objeto do tipo evento assinado</returns>
-        public static void Assina(this eventoCTe eventoCTe)
+        public static void Assina(this eventoCTe eventoCTe, ConfiguracaoServico configuracaoServico = null)
         {
+            var configServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
             if (eventoCTe.infEvento.Id == null)
                 throw new Exception("Não é possível assinar um objeto evento sem sua respectiva Id!");
 
             eventoCTe.Signature = AssinaturaDigital.Assina(eventoCTe, eventoCTe.infEvento.Id,
-                ConfiguracaoServico.Instancia.X509Certificate2);
+                configServico.X509Certificate2);
         }
 
-        public static void ValidarSchema(this eventoCTe eventoCTe)
+        public static void ValidarSchema(this eventoCTe eventoCTe, ConfiguracaoServico configuracaoServico = null)
         {
             var xmlEvento = eventoCTe.ObterXmlString();
 
             switch (eventoCTe.versao)
             {
                 case versao.ve200:
-                    Validador.Valida(xmlEvento, "eventoCTe_v2.00.xsd");
+                    Validador.Valida(xmlEvento, "eventoCTe_v2.00.xsd", configuracaoServico);
                     break;
                 case versao.ve300:
-                    Validador.Valida(xmlEvento, "eventoCTe_v3.00.xsd");
+                    Validador.Valida(xmlEvento, "eventoCTe_v3.00.xsd", configuracaoServico);
                     break;
                 default:
                     throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
@@ -87,10 +90,10 @@ namespace CTe.Utils.Evento
                                                    "versão 2.00 é 3.00");
             }
 
-            ValidarSchemaEventoContainer(eventoCTe.infEvento.detEvento.EventoContainer, eventoCTe.versao);
+            ValidarSchemaEventoContainer(eventoCTe.infEvento.detEvento.EventoContainer, eventoCTe.versao, configuracaoServico);
         }
 
-        private static void ValidarSchemaEventoContainer(EventoContainer container, versao versao)
+        private static void ValidarSchemaEventoContainer(EventoContainer container, versao versao, ConfiguracaoServico configuracaoServico = null)
         {
             if (container.GetType() == typeof(evCancCTe))
             {
@@ -101,10 +104,10 @@ namespace CTe.Utils.Evento
                 switch (versao)
                 {
                     case versao.ve200:
-                        Validador.Valida(xmlEventoCancelamento, "evCancCTe_v2.00.xsd");
+                        Validador.Valida(xmlEventoCancelamento, "evCancCTe_v2.00.xsd", configuracaoServico);
                         break;
                     case versao.ve300:
-                        Validador.Valida(xmlEventoCancelamento, "evCancCTe_v3.00.xsd");
+                        Validador.Valida(xmlEventoCancelamento, "evCancCTe_v3.00.xsd", configuracaoServico);
                         break;
                     default:
                         throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
@@ -124,10 +127,10 @@ namespace CTe.Utils.Evento
                 switch (versao)
                 {
                     case versao.ve200:
-                        Validador.Valida(xmlEventoCCe, "evCCeCTe_v2.00.xsd");
+                        Validador.Valida(xmlEventoCCe, "evCCeCTe_v2.00.xsd", configuracaoServico);
                         break;
                     case versao.ve300:
-                        Validador.Valida(xmlEventoCCe, "evCCeCTe_v3.00.xsd");
+                        Validador.Valida(xmlEventoCCe, "evCCeCTe_v3.00.xsd", configuracaoServico);
                         break;
                     default:
                         throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
@@ -145,10 +148,10 @@ namespace CTe.Utils.Evento
                 switch (versao)
                 {
                     case versao.ve200:
-                        Validador.Valida(xmlEventoCCe, "evPrestDesacordo_v2.00.xsd");
+                        Validador.Valida(xmlEventoCCe, "evPrestDesacordo_v2.00.xsd", configuracaoServico);
                         break;
                     case versao.ve300:
-                        Validador.Valida(xmlEventoCCe, "evPrestDesacordo_v3.00.xsd");
+                        Validador.Valida(xmlEventoCCe, "evPrestDesacordo_v3.00.xsd", configuracaoServico);
                         break;
                     default:
                         throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
@@ -158,15 +161,15 @@ namespace CTe.Utils.Evento
             }
         }
 
-        public static void SalvarXmlEmDisco(this eventoCTe eventoCTe)
+        public static void SalvarXmlEmDisco(this eventoCTe eventoCTe, ConfiguracaoServico configuracaoServico = null)
         {
-            var instanciaServico = ConfiguracaoServico.Instancia;
+            var instanciaServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
 
             if (instanciaServico.NaoSalvarXml()) return;
 
             var caminhoXml = instanciaServico.DiretorioSalvarXml;
 
-            var arquivoSalvar = caminhoXml + @"\" + eventoCTe.infEvento.chCTe + "-ped-eve.xml";
+            var arquivoSalvar = Path.Combine(caminhoXml, eventoCTe.infEvento.chCTe + "-ped-eve.xml");
 
             FuncoesXml.ClasseParaArquivoXml(eventoCTe, arquivoSalvar);
         }

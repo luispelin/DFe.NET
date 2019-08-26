@@ -31,6 +31,7 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 using System;
+using System.IO;
 using System.Xml;
 using CTe.Classes;
 using CTe.Classes.Servicos.Recepcao.Retorno;
@@ -42,17 +43,17 @@ namespace CTe.Utils.Extencoes
 {
     public static class ExtConsReciCTe
     {
-        public static void ValidarSchema(this consReciCTe consReciCTe)
+        public static void ValidarSchema(this consReciCTe consReciCTe, ConfiguracaoServico configuracaoServico = null)
         {
             var xmlValidacao = consReciCTe.ObterXmlString();
 
             switch (consReciCTe.versao)
             {
                 case versao.ve200:
-                    Validador.Valida(xmlValidacao, "consReciCTe_v2.00.xsd");
+                    Validador.Valida(xmlValidacao, "consReciCTe_v2.00.xsd", configuracaoServico);
                     break;
                 case versao.ve300:
-                    Validador.Valida(xmlValidacao, "consReciCTe_v3.00.xsd");
+                    Validador.Valida(xmlValidacao, "consReciCTe_v3.00.xsd", configuracaoServico);
                     break;
                 default:
                     throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
@@ -71,15 +72,15 @@ namespace CTe.Utils.Extencoes
             return FuncoesXml.ClasseParaXmlString(consReciCTe);
         }
 
-        public static void SalvarXmlEmDisco(this consReciCTe consReciCTe)
+        public static void SalvarXmlEmDisco(this consReciCTe consReciCTe, ConfiguracaoServico configuracaoServico = null)
         {
-            var instanciaServico = ConfiguracaoServico.Instancia;
+            var instanciaServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
 
             if (instanciaServico.NaoSalvarXml()) return;
 
             var caminhoXml = instanciaServico.DiretorioSalvarXml;
 
-            var arquivoSalvar = caminhoXml + @"\"+ consReciCTe.nRec + @"-ped-rec.xml";
+            var arquivoSalvar = Path.Combine(caminhoXml, consReciCTe.nRec + "-ped-rec.xml");
 
             FuncoesXml.ClasseParaArquivoXml(consReciCTe, arquivoSalvar);
         }
@@ -94,15 +95,15 @@ namespace CTe.Utils.Extencoes
 
 
         // Salvar Retorno de Envio de Recibo
-        public static void SalvarXmlEmDisco(this retConsReciCTe retConsReciCTe)
+        public static void SalvarXmlEmDisco(this retConsReciCTe retConsReciCTe, ConfiguracaoServico configuracaoServico = null)
         {
-            var instanciaServico = ConfiguracaoServico.Instancia;
+            var instanciaServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
 
             if (instanciaServico.NaoSalvarXml()) return;
 
             var caminhoXml = instanciaServico.DiretorioSalvarXml;
 
-            var arquivoSalvar = caminhoXml + @"\" + retConsReciCTe.nRec + @"-rec.xml";
+            var arquivoSalvar = Path.Combine(caminhoXml, retConsReciCTe.nRec + "-rec.xml");
 
             FuncoesXml.ClasseParaArquivoXml(retConsReciCTe, arquivoSalvar);
         }
