@@ -189,18 +189,20 @@ namespace NFe.Danfe.Fast.NFe
             Relatorio.SetParameterValue("ExibirTotalTributos", configuracaoDanfeNfe.ExibirTotalTributos);
             Relatorio.SetParameterValue("DecimaisValorUnitario", configuracaoDanfeNfe.DecimaisValorUnitario);
             Relatorio.SetParameterValue("DecimaisQuantidadeItem", configuracaoDanfeNfe.DecimaisQuantidadeItem);
-            
-            #endregion Define as variáveis que serão usadas no relatório (dúvidas a respeito do fast reports consulte a documentação em https://www.fast-report.com/pt/product/fast-report-net/documentation/)
-        }
+			Relatorio.SetParameterValue("ExibirEmailEmitente", configuracaoDanfeNfe.ExibirEmailEmitente);
+			Relatorio.SetParameterValue("EmailEmitente", configuracaoDanfeNfe.EmailEmitente);
 
-        /// <summary>
-        /// Construtor da classe responsável pela impressão do DANFE da NFe em Fast Reports.
-        /// Use esse construtor apenas para impressão em contingência, já que neste modo ainda não é possível obter o grupo protNFe
-        /// </summary>
-        /// <param name="nfe">Objeto do tipo <see cref="Classes.NFe"/></param>
-        /// <param name="configuracaoDanfeNfe">Objeto do tipo <see cref="ConfiguracaoDanfeNfe"/> contendo as definições de impressão</param>
-        /// <param name="desenvolvedor">Texto do desenvolvedor a ser informado no DANFE</param>
-        public DanfeFrNfe(Classes.NFe nfe, ConfiguracaoDanfeNfe configuracaoDanfeNfe, string desenvolvedor) : this(new nfeProc() { NFe = nfe }, configuracaoDanfeNfe, desenvolvedor)
+			#endregion Define as variáveis que serão usadas no relatório (dúvidas a respeito do fast reports consulte a documentação em https://www.fast-report.com/pt/product/fast-report-net/documentation/)
+		}
+
+		/// <summary>
+		/// Construtor da classe responsável pela impressão do DANFE da NFe em Fast Reports.
+		/// Use esse construtor apenas para impressão em contingência, já que neste modo ainda não é possível obter o grupo protNFe
+		/// </summary>
+		/// <param name="nfe">Objeto do tipo <see cref="Classes.NFe"/></param>
+		/// <param name="configuracaoDanfeNfe">Objeto do tipo <see cref="ConfiguracaoDanfeNfe"/> contendo as definições de impressão</param>
+		/// <param name="desenvolvedor">Texto do desenvolvedor a ser informado no DANFE</param>
+		public DanfeFrNfe(Classes.NFe nfe, ConfiguracaoDanfeNfe configuracaoDanfeNfe, string desenvolvedor) : this(new nfeProc() { NFe = nfe }, configuracaoDanfeNfe, desenvolvedor)
         {
         }
     }

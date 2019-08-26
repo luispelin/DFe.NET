@@ -1,3 +1,4 @@
+
 /********************************************************************************/
 /* Projeto: Biblioteca ZeusNFe                                                  */
 /* Biblioteca C# para emissão de Nota Fiscal Eletrônica - NFe e Nota Fiscal de  */
@@ -31,14 +32,15 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 
-using System.IO;
 using FastReport;
-using FastReport.Export.Pdf;
+using FastReport.Export.Image;
 using NFe.Danfe.Base;
+using System.Collections.Generic;
+using System.IO;
 
 namespace NFe.Danfe.Fast
 {
-    public class DanfeBase: IDanfe
+	public class DanfeBase: IDanfe
     {
         public Report Relatorio { get; protected set; }
 
@@ -48,7 +50,8 @@ namespace NFe.Danfe.Fast
         /// <param name="modal">Se true, exibe a visualização em Modal. O modo modal está disponível apenas para WinForms</param>
         public void Visualizar(bool modal = true)
         {
-            Relatorio.Show(modal);
+			// Este método não será útil para o SINFe e é muito complicado de migrar para a nova versão do FastReport
+            //Relatorio.Show(modal);
         }
 
         /// <summary>
@@ -58,36 +61,94 @@ namespace NFe.Danfe.Fast
         /// <param name="modal">Se true, exibe a visualização em Modal. O modo modal está disponível apenas para WinForms</param>
         public void ExibirDesign(bool modal = false)
         {
-            Relatorio.Design(modal);
+			// Este método não será útil para o SINFe e é muito complicado de migrar para a nova versão do FastReport
+			//Relatorio.Design(modal);
+		}
+
+		/// <summary>
+		/// Envia a impressão do DANFE da NFCe diretamente para a impressora
+		/// </summary>
+		/// <param name="exibirDialogo">Se true exibe o diálogo Imprimindo...</param>
+		/// <param name="impressora">Passe a string com o nome da impressora para imprimir diretamente em determinada impressora. Caso contrário, a impressão será feita na impressora que estiver como padrão</param>
+		public void Imprimir(bool exibirDialogo = true, string impressora = "")
+        {
+			// Este método não será útil para o SINFe e é muito complicado de migrar para a nova versão do FastReport
+			//Relatorio.PrintSettings.ShowDialog = exibirDialogo;
+			//Relatorio.PrintSettings.Printer = impressora;
+			//Relatorio.Print();
+		}
+
+		/// <summary>
+		/// Converte o DANFE para PDF e salva-o no caminho/arquivo indicado
+		/// </summary>
+		/// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DANFE</param>
+		public void ExportarPdf(string arquivo)
+        {
+			//Relatorio.Compressed = true;
+			//Relatorio.Prepare();
+			//Relatorio.Export(new PDFSimpleExport(), arquivo);
+		}
+
+		public void ExportarPdf2Image(string arquivo)
+		{
+			Relatorio.Prepare();
+			Relatorio.Export(new ImageExport() { ImageFormat = ImageExportFormat.Png }, arquivo);
+		}
+
+		public void ExportarPdf(Stream outputStream)
+        {
+            //Relatorio.Prepare();
+            //Relatorio.Export(new PDFSimpleExport(), outputStream);
+            //outputStream.Position = 0;
         }
 
-        /// <summary>
-        /// Envia a impressão do DANFE da NFCe diretamente para a impressora
-        /// </summary>
-        /// <param name="exibirDialogo">Se true exibe o diálogo Imprimindo...</param>
-        /// <param name="impressora">Passe a string com o nome da impressora para imprimir diretamente em determinada impressora. Caso contrário, a impressão será feita na impressora que estiver como padrão</param>
-        public void Imprimir(bool exibirDialogo = true, string impressora = "")
-        {
-            Relatorio.PrintSettings.ShowDialog = exibirDialogo;
-            Relatorio.PrintSettings.Printer = impressora;
-            Relatorio.Print();
-        }
+		public IList<byte[]> ExportarPdf2ImagePng()
+		{
+			IList<byte[]> lst = new List<byte[]>();
+			if (Relatorio.Prepare())
+			{
+				for (int i = 0; i < Relatorio.PreparedPages.Count; i++)
+				{
+					using (MemoryStream ms = new MemoryStream())
+					{
+						Relatorio.Export(new ImageExport()
+						{
+							ImageFormat = ImageExportFormat.Png,
+							PageRange = PageRange.Current,
+							Resolution = 168,
+							CurPage = i + 1
+						}, ms);
+						lst.Add(ms.ToArray());
+					}
+				}
+			}
 
-        /// <summary>
-        /// Converte o DANFE para PDF e salva-o no caminho/arquivo indicado
-        /// </summary>
-        /// <param name="arquivo">Caminho/arquivo onde deve ser salvo o PDF do DANFE</param>
-        public void ExportarPdf(string arquivo)
-        {
-            Relatorio.Prepare();
-            Relatorio.Export(new PDFExport(), arquivo);
-        }
+			return lst;
+		}
 
-        public void ExportarPdf(Stream outputStream)
-        {
-            Relatorio.Prepare();
-            Relatorio.Export(new PDFExport(), outputStream);
-            outputStream.Position = 0;
-        }
-    }
+		public IList<byte[]> ExportarPdf2ImageJpeg()
+		{
+			IList<byte[]> lst = new List<byte[]>();
+			if (Relatorio.Prepare())
+			{
+				for (int i = 0; i < Relatorio.PreparedPages.Count; i++)
+				{
+					using (MemoryStream ms = new MemoryStream())
+					{
+						Relatorio.Export(new ImageExport()
+						{
+							ImageFormat = ImageExportFormat.Jpeg,
+							JpegQuality = 100,
+							Resolution = 168,
+							PageRange = PageRange.Current,
+							CurPage = i + 1
+						}, ms);
+						lst.Add(ms.ToArray());
+					}
+				}
+			}
+
+			return lst;
+		}
+	}
 }

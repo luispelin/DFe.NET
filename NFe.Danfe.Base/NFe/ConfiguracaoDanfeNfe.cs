@@ -71,6 +71,8 @@ namespace NFe.Danfe.Base.NFe
             ExibirTotalTributos = false;
             DecimaisValorUnitario = 2;
             DecimaisQuantidadeItem = 2;
+			ExibirEmailEmitente = false;
+			EmailEmitente = string.Empty;
         }
 
         public bool DuasLinhas { get; set; }
@@ -96,5 +98,8 @@ namespace NFe.Danfe.Base.NFe
         public bool ExibirTotalTributos { get; set; }
         public int DecimaisValorUnitario { get; set; }
         public int DecimaisQuantidadeItem { get; set; }
-    }
+
+		public bool ExibirEmailEmitente { get; set; }
+		public string EmailEmitente { get; set; }
+	}
 }

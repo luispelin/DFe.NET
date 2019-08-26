@@ -43,9 +43,11 @@ namespace DFe.Utils
 {
     public static class FuncoesXml
     {
+		// Preparando lock para ambiente multithread
+		private static readonly object _lock = new object();
 
-        // https://github.com/ZeusAutomacao/DFe.NET/issues/610
-        private static readonly Hashtable CacheSerializers = new Hashtable();
+		// https://github.com/ZeusAutomacao/DFe.NET/issues/610
+		private static readonly Hashtable CacheSerializers = new Hashtable();
 
         /// <summary>
         ///     Serializa a classe passada para uma string no form
@@ -224,16 +226,20 @@ namespace DFe.Utils
         // https://github.com/ZeusAutomacao/DFe.NET/issues/610
         private static XmlSerializer BuscarNoCache(string chave, Type type)
         {
-            if (CacheSerializers.Contains(chave))
-            {
-                return (XmlSerializer)CacheSerializers[chave];
-            }
+			// Garantir sincronizacao no multithread
+			lock (_lock)
+			{
+				if (CacheSerializers.Contains(chave))
+				{
+					return (XmlSerializer)CacheSerializers[chave];
+				}
 
 
-            var ser = XmlSerializer.FromTypes(new[] { type })[0];
-            CacheSerializers.Add(chave, ser);
+				var ser = XmlSerializer.FromTypes(new[] { type })[0];
+				CacheSerializers.Add(chave, ser);
 
-            return ser;
+				return ser;
+			}
         }
     }
 }
