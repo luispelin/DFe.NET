@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 
 namespace Shared.DFe.Danfe.Fast
 {
-    public static class DanfeSharedHelper
+	public static class DanfeSharedHelper
     {
         public static Report GenerateDanfeNfceReport(nfeProc proc, ConfiguracaoDanfeNfce configuracaoDanfeNfce, string cIdToken, string csc, byte[] frx, string arquivoRelatorio, string textoRodape = "")
         {
@@ -52,16 +52,16 @@ namespace Shared.DFe.Danfe.Fast
             ((BarcodeObject)relatorio.FindObject("bcoQrCodeLateral")).Text = proc.NFe.infNFeSupl == null ? proc.NFe.infNFeSupl.ObterUrlQrCode(proc.NFe, configuracaoDanfeNfce.VersaoQrCode, cIdToken, csc) : proc.NFe.infNFeSupl.qrCode;
 
             //Segundo o Manual de Padrões Técnicos do DANFE - NFC - e e QR Code, versão 3.2, página 9, nos casos de emissão em contingência deve ser impresso uma segunda cópia como via do estabelecimento
-            if (configuracaoDanfeNfce.SegundaViaContingencia)
-            {
-#if Standard
-                    throw new Exception("configuracaoDanfeNfce.SegundaViaContingencia não suportado em .net standard, apenas em .net framework");
+//            if (configuracaoDanfeNfce.SegundaViaContingencia)
+//            {
+//#if Standard
+//                    throw new Exception("configuracaoDanfeNfce.SegundaViaContingencia não suportado em .net standard, apenas em .net framework");
 
-#else
-                relatorio.PrintSettings.Copies = (proc.NFe.infNFe.ide.tpEmis == TipoEmissao.teNormal | (proc.protNFe != null && proc.protNFe.infProt != null && NfeSituacao.Autorizada(proc.protNFe.infProt.cStat))
-                /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
-#endif
-            }
+//#else
+//                relatorio.PrintSettings.Copies = (proc.NFe.infNFe.ide.tpEmis == TipoEmissao.teNormal | (proc.protNFe != null && proc.protNFe.infProt != null && NfeSituacao.Autorizada(proc.protNFe.infProt.cStat))
+//                /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
+//#endif
+//            }
 
             return relatorio;
         }

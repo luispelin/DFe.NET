@@ -31,16 +31,19 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 
+using FastReport;
+using FastReport.Barcode;
 using NFe.Classes;
 using NFe.Danfe.Base.NFCe;
-using Shared.DFe.Danfe.Fast;
+using NFe.Utils.InformacoesSuplementares;
+using System.IO;
 
 namespace NFe.Danfe.Fast.NFCe
 {
-    /// <summary>
-    /// Classe responsável pela impressão do DANFE da NFCe em Fast Reports
-    /// </summary>
-    public class DanfeFrNfce : DanfeBase
+	/// <summary>
+	/// Classe responsável pela impressão do DANFE da NFCe em Fast Reports
+	/// </summary>
+	public class DanfeFrNfce : DanfeBase
     {
         /// <summary>
         /// Construtor da classe responsável pela impressão do DANFE da NFCe em Fast Reports
@@ -53,7 +56,6 @@ namespace NFe.Danfe.Fast.NFCe
         /// <param name="textoRodape">Texto para ser impresso no final do documento</param>
         public DanfeFrNfce(nfeProc proc, ConfiguracaoDanfeNfce configuracaoDanfeNfce, string cIdToken, string csc, string arquivoRelatorio = "", string textoRodape = "")
         {
-<<<<<<< HEAD
             #region Define as variáveis que serão usadas no relatório (dúvidas a respeito do fast reports consulte a documentação em https://www.fast-report.com/pt/product/fast-report-net/documentation/)
 
             Relatorio = new Report();
@@ -84,9 +86,6 @@ namespace NFe.Danfe.Fast.NFCe
             //    /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
 
             #endregion
-=======
-            Relatorio = DanfeSharedHelper.GenerateDanfeNfceReport(proc, configuracaoDanfeNfce, cIdToken, csc, Properties.Resources.NFCe, arquivoRelatorio);
->>>>>>> 1a0f6a84105cdfff47475ce601a45e596bbf2c74
         }
 
         /// <summary>
