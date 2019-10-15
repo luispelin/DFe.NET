@@ -31,15 +31,9 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using DFe.Classes.Flags;
-using FastReport;
 using NFe.Classes;
-using NFe.Classes.Informacoes.Identificacao.Tipos;
 using NFe.Danfe.Base.NFe;
-using NFe.Danfe.Fast.Properties;
+using Shared.DFe.Danfe.Fast;
 
 namespace NFe.Danfe.Fast.NFe
 {
@@ -56,6 +50,7 @@ namespace NFe.Danfe.Fast.NFe
         /// <param name="desenvolvedor">Texto do desenvolvedor a ser informado no DANFE</param>
         public DanfeFrNfe(nfeProc proc, ConfiguracaoDanfeNfe configuracaoDanfeNfe, string desenvolvedor = "", string arquivoRelatorio = "")
         {
+<<<<<<< HEAD
             #region Define as variáveis que serão usadas no relatório (dúvidas a respeito do fast reports consulte a documentação em https://www.fast-report.com/pt/product/fast-report-net/documentation/)
 
             Relatorio = new Report();
@@ -191,6 +186,10 @@ namespace NFe.Danfe.Fast.NFe
             Relatorio.SetParameterValue("DecimaisQuantidadeItem", configuracaoDanfeNfe.DecimaisQuantidadeItem);
 			Relatorio.SetParameterValue("ExibirEmailEmitente", configuracaoDanfeNfe.ExibirEmailEmitente);
 			Relatorio.SetParameterValue("EmailEmitente", configuracaoDanfeNfe.EmailEmitente);
+=======
+            Relatorio = DanfeSharedHelper.GenerateDanfeFrNfeReport(proc, configuracaoDanfeNfe, Properties.Resources.NFeRetrato, desenvolvedor, arquivoRelatorio);
+        }
+>>>>>>> 1a0f6a84105cdfff47475ce601a45e596bbf2c74
 
 			#endregion Define as variáveis que serão usadas no relatório (dúvidas a respeito do fast reports consulte a documentação em https://www.fast-report.com/pt/product/fast-report-net/documentation/)
 		}
