@@ -86,6 +86,8 @@ namespace NFe.Danfe.Fast.NFCe
             //    /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
 
             #endregion
+
+            //Relatorio = DanfeSharedHelper.GenerateDanfeNfceReport(proc, configuracaoDanfeNfce, cIdToken, csc, Properties.Resources.NFCe, arquivoRelatorio);
         }
 
         /// <summary>
