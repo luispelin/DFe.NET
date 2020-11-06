@@ -45,23 +45,27 @@ namespace Shared.DFe.Danfe.Fast
             //alteracao necessaria para .netstandard, o código abaixo utiliza um método onde não é compativel para .netstandard:
             //de : //((PictureObject)relatorio.FindObject("poEmitLogo")).Image = configuracaoDanfeNfce.ObterLogo();
             //para:
+#if Standard
             ((PictureObject)relatorio.FindObject("poEmitLogo")).SetImageData(configuracaoDanfeNfce.Logomarca);
+#else
+            ((PictureObject)relatorio.FindObject("poEmitLogo")).Image = configuracaoDanfeNfce.ObterLogo();
+#endif
 
             ((TextObject)relatorio.FindObject("txtUrl")).Text = string.IsNullOrEmpty(proc.NFe.infNFeSupl.urlChave) ? proc.NFe.infNFeSupl.ObterUrlConsulta(proc.NFe, configuracaoDanfeNfce.VersaoQrCode) : proc.NFe.infNFeSupl.urlChave;
             ((BarcodeObject)relatorio.FindObject("bcoQrCode")).Text = proc.NFe.infNFeSupl == null ? proc.NFe.infNFeSupl.ObterUrlQrCode(proc.NFe, configuracaoDanfeNfce.VersaoQrCode, cIdToken, csc) : proc.NFe.infNFeSupl.qrCode;
             ((BarcodeObject)relatorio.FindObject("bcoQrCodeLateral")).Text = proc.NFe.infNFeSupl == null ? proc.NFe.infNFeSupl.ObterUrlQrCode(proc.NFe, configuracaoDanfeNfce.VersaoQrCode, cIdToken, csc) : proc.NFe.infNFeSupl.qrCode;
 
             //Segundo o Manual de Padrões Técnicos do DANFE - NFC - e e QR Code, versão 3.2, página 9, nos casos de emissão em contingência deve ser impresso uma segunda cópia como via do estabelecimento
-            if (configuracaoDanfeNfce.SegundaViaContingencia)
-            {
-#if Standard
-                    throw new Exception("configuracaoDanfeNfce.SegundaViaContingencia não suportado em .net standard, apenas em .net framework");
+//            if (configuracaoDanfeNfce.SegundaViaContingencia)
+//            {
+//#if Standard
+//                    throw new Exception("configuracaoDanfeNfce.SegundaViaContingencia não suportado em .net standard, apenas em .net framework");
 
-#else
-                relatorio.PrintSettings.Copies = (proc.NFe.infNFe.ide.tpEmis == TipoEmissao.teNormal | (proc.protNFe != null && proc.protNFe.infProt != null && NfeSituacao.Autorizada(proc.protNFe.infProt.cStat))
-                /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
-#endif
-            }
+//#else
+//                relatorio.PrintSettings.Copies = (proc.NFe.infNFe.ide.tpEmis == TipoEmissao.teNormal | (proc.protNFe != null && proc.protNFe.infProt != null && NfeSituacao.Autorizada(proc.protNFe.infProt.cStat))
+//                /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
+//#endif
+//            }
 
             return relatorio;
         }
@@ -216,6 +220,7 @@ namespace Shared.DFe.Danfe.Fast
             relatorio.SetParameterValue("ExibirTotalTributos", configuracaoDanfeNfe.ExibirTotalTributos);
             relatorio.SetParameterValue("DecimaisValorUnitario", configuracaoDanfeNfe.DecimaisValorUnitario);
             relatorio.SetParameterValue("DecimaisQuantidadeItem", configuracaoDanfeNfe.DecimaisQuantidadeItem);
+            relatorio.SetParameterValue("DataHoraImpressao", configuracaoDanfeNfe.DataHoraImpressao ?? DateTime.Now);
 
             return relatorio;
         }

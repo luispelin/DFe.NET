@@ -40,6 +40,8 @@ using MDFe.Classes.Servicos.Autorizacao;
 using MDFe.Utils.Configuracoes;
 using System;
 using System.Collections.Generic;
+using DFe.Classes.Entidades;
+using MDFe.Classes.Informacoes;
 using MDFeEletronico = MDFe.Classes.Informacoes.MDFe;
 
 namespace MDFe.Servicos.Factory
@@ -70,7 +72,7 @@ namespace MDFe.Servicos.Factory
             return consMDFeNaoEnc;
         }
 
-        public static MDFeEvIncDFeMDFe CriaEvIncDFeMDFe(string protocolo, string codigoMunicipioCarregamento, string nomeMunicipioCarregamento, IList<MDFeInfDocInc> informacoesDocumentos)
+        public static MDFeEvIncDFeMDFe CriaEvIncDFeMDFe(string protocolo, string codigoMunicipioCarregamento, string nomeMunicipioCarregamento, List<MDFeInfDocInc> informacoesDocumentos)
         {
             return new MDFeEvIncDFeMDFe
             {
@@ -114,6 +116,20 @@ namespace MDFe.Servicos.Factory
                 DtEnc = DateTime.Now,
                 DescEvento = "Encerramento",
                 CMun = mdfe.CodigoIbgeMunicipioEmitente(),
+                NProt = protocolo
+            };
+
+            return encerramento;
+        }
+
+        public static MDFeEvEncMDFe CriaEvEncMDFe(Estado estadoEncerramento, long codigoMunicipioEncerramento, string protocolo)
+        {
+            var encerramento = new MDFeEvEncMDFe
+            {
+                CUF = estadoEncerramento,
+                DtEnc = DateTime.Now,
+                DescEvento = "Encerramento",
+                CMun = codigoMunicipioEncerramento,
                 NProt = protocolo
             };
 
@@ -168,6 +184,16 @@ namespace MDFe.Servicos.Factory
                 TpAmb = MDFeConfiguracao.VersaoWebService.TipoAmbiente,
                 Versao = MDFeConfiguracao.VersaoWebService.VersaoLayout,
                 XServ = "STATUS"
+            };
+        }
+
+        public static evPagtoOperMDFe CriaEvPagtoOperMDFe(string protocolo, infViagens infViagens, List<infPag> infPagamentos)
+        {
+            return new evPagtoOperMDFe
+            {
+                infViagens = infViagens,
+                nProt = protocolo,
+                infPag = infPagamentos
             };
         }
     }
