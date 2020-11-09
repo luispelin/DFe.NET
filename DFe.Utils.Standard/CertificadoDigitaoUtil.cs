@@ -53,7 +53,7 @@ namespace DFe.Utils.Standard
                 throw new Exception("Certificado não se encontra no caminho especificado");
             }
 
-            var cert = new X509Certificate2(caminho, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+            var cert = new X509Certificate2(caminho, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.UserKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
             return cert;
         }
 
@@ -93,7 +93,7 @@ namespace DFe.Utils.Standard
         /// <returns></returns>
         public static X509Certificate2 ObterDosBytes(byte[] bytes, SecureString password)
         {
-            var cert = new X509Certificate2(bytes, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+            var cert = new X509Certificate2(bytes, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.UserKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
             return cert;
         }
 

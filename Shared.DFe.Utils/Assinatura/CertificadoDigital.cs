@@ -74,7 +74,7 @@ namespace DFe.Utils.Assinatura
                 throw new Exception(string.Format("Certificado digital {0} não encontrado!", arquivo));
             }
 
-            var certificado = new X509Certificate2(arquivo, senha, X509KeyStorageFlags.MachineKeySet);
+            var certificado = new X509Certificate2(arquivo, senha, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.UserKeySet);
             return certificado;
         }
 
@@ -89,7 +89,7 @@ namespace DFe.Utils.Assinatura
         {
             try
             {
-                var certificado = new X509Certificate2(arrayBytes, senha, X509KeyStorageFlags.MachineKeySet);
+                var certificado = new X509Certificate2(arrayBytes, senha, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.UserKeySet);
                 return certificado;
             }
             catch (Exception ex)
