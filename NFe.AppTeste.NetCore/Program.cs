@@ -1009,38 +1009,25 @@ namespace NFe.AppTeste.NetCore
             return c;
         }
 
-        private static List<pag> GetPagamento(ICMSTot icmsTot, VersaoServico versao)
+        private static pag GetPagamento(ICMSTot icmsTot, VersaoServico versao)
         {
             decimal valorPagto = (icmsTot.vNF / 2).Arredondar(2);
 
             if (versao != VersaoServico.Versao400) // difernte de versão 4 retorna isso
             {
-                List<pag> p = new List<pag>
-                {
-                    new pag {tPag = FormaPagamento.fpDinheiro, vPag = valorPagto},
-                    new pag {tPag = FormaPagamento.fpCheque, vPag = icmsTot.vNF - valorPagto}
-                };
-                return p;
+                return new pag { tPag = FormaPagamento.fpDinheiro, vPag = valorPagto };
             }
 
 
             // igual a versão 4 retorna isso
-            List<pag> p4 = new List<pag>
+            return new pag
             {
-                //new pag {detPag = new detPag {tPag = FormaPagamento.fpDinheiro, vPag = valorPagto}},
-                //new pag {detPag = new detPag {tPag = FormaPagamento.fpCheque, vPag = icmsTot.vNF - valorPagto}}
-                new pag
-                {
-                    detPag = new List<detPag>
+                detPag = new List<detPag>
                     {
                         new detPag {tPag = FormaPagamento.fpCreditoLoja, vPag = valorPagto},
                         new detPag {tPag = FormaPagamento.fpCreditoLoja, vPag = icmsTot.vNF - valorPagto}
                     }
-                }
             };
-
-
-            return p4;
         }
 
 

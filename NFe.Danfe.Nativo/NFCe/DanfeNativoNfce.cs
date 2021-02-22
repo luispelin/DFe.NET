@@ -391,19 +391,16 @@ namespace NFe.Danfe.Nativo.NFCe
             tituloValorPago.Desenhar(tituloValorPagoX, _y);
             _y += tituloFormaPagamento.Medida.Altura;
 
-            foreach (pag pag in _nfe.infNFe.pag)
-            {
-                // v3.1
-                if (pag.tPag != null)
-                    AdicionaFormaPagamento(x, larguraLinhaMargemDireita, g, pag.tPag, pag.vPag);
+            // v3.1
+            if (_nfe.infNFe.pag.tPag != null)
+                AdicionaFormaPagamento(x, larguraLinhaMargemDireita, g, _nfe.infNFe.pag.tPag, _nfe.infNFe.pag.vPag);
 
-                // v4.0
-                if (pag.detPag != null)
-                    foreach (var detPag in pag.detPag)
-                    {
-                        AdicionaFormaPagamento(x, larguraLinhaMargemDireita, g, detPag.tPag, detPag.vPag);
-                    }
-            }
+            // v4.0
+            if (_nfe.infNFe.pag.detPag != null)
+                foreach (var detPag in _nfe.infNFe.pag.detPag)
+                {
+                    AdicionaFormaPagamento(x, larguraLinhaMargemDireita, g, detPag.tPag, detPag.vPag);
+                }
 
             _y += 2;
 

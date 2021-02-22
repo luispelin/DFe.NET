@@ -1380,38 +1380,25 @@ namespace NFe.AppTeste
             return c;
         }
 
-        protected virtual List<pag> GetPagamento(ICMSTot icmsTot, VersaoServico versao)
+        protected virtual pag GetPagamento(ICMSTot icmsTot, VersaoServico versao)
         {
             var valorPagto = (icmsTot.vNF / 2).Arredondar(2);
 
             if (versao != VersaoServico.Versao400) // difernte de versão 4 retorna isso
             {
-                var p = new List<pag>
-                {
-                    new pag {tPag = FormaPagamento.fpDinheiro, vPag = valorPagto},
-                    new pag {tPag = FormaPagamento.fpCheque, vPag = icmsTot.vNF - valorPagto}
-                };
-                return p;
+                return new pag { tPag = FormaPagamento.fpDinheiro, vPag = valorPagto };
             }
 
 
             // igual a versão 4 retorna isso
-            var p4 = new List<pag>
+            return new pag
             {
-                //new pag {detPag = new detPag {tPag = FormaPagamento.fpDinheiro, vPag = valorPagto}},
-                //new pag {detPag = new detPag {tPag = FormaPagamento.fpCheque, vPag = icmsTot.vNF - valorPagto}}
-                new pag
-                {
-                    detPag = new List<detPag>
+                detPag = new List<detPag>
                     {
                         new detPag {tPag = FormaPagamento.fpCreditoLoja, vPag = valorPagto},
                         new detPag {tPag = FormaPagamento.fpCreditoLoja, vPag = icmsTot.vNF - valorPagto}
                     }
-                }
             };
-
-
-            return p4;
         }
 
         #endregion

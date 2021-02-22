@@ -128,10 +128,8 @@ namespace NFe.Classes.Informacoes
 
         /// <summary>
         ///     YA01 - Grupo de Formas de Pagamento
-        ///     <para>Ocorrência: 0-100</para>
         /// </summary>
-        [XmlElement("pag")]
-        public List<pag> pag { get; set; }
+        public pag pag { get; set; }
 
         /// <summary>
         ///     YB01 - Grupo de Informações do Intermediador da Transação 
