@@ -184,6 +184,11 @@ namespace DFe.Utils.Assinatura
                     return ObterDeArquivo(configuracaoCertificado.Arquivo, configuracaoCertificado.Senha);
                 case TipoCertificado.A3:
                     return ObterDoRepositorioPassandoPin(configuracaoCertificado.Serial, configuracaoCertificado.Senha);
+                case TipoCertificado.X509Certificate2:
+                    // Card #Sin1004: tive que fazer essa gambiarra asquerosa porque o .Net 4.5 não aceita a opção "X509KeyStorageFlags.EphemeralKeySet",
+                    // se ele aceitasse, eu criaria um certificado com essa opção e com array de bytes -> se no futuro for modificado o .Net para 4.7.2,
+                    // então a linha abaixo pode ser retirada e no momento de criar o certificado com array de bytes, usar o "X509KeyStorageFlags.EphemeralKeySet"
+                    return configuracaoCertificado.X509Certificate2;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

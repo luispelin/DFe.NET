@@ -33,6 +33,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DFe.Utils
 {
@@ -48,7 +49,10 @@ namespace DFe.Utils
         A3 = 2,
 
         [Description("Certificado A1 em byte array")]
-        A1ByteArray = 3
+        A1ByteArray = 3,
+
+        [Description("Certificado ja criado")]
+        X509Certificate2 = 50
     }
 
     public class ConfiguracaoCertificado
@@ -59,8 +63,9 @@ namespace DFe.Utils
         private TipoCertificado _tipoCertificado;
         private string _cacheId;
         private byte[] _arrayBytesArquivo;
+        private X509Certificate2 _x509Certificate2;
 
-		public string[] ArrCNPJOuCPF { get; set; }
+        public string[] ArrCNPJOuCPF { get; set; }
 
         public ConfiguracaoCertificado()
         {
@@ -161,6 +166,12 @@ namespace DFe.Utils
                 if (value == _cacheId) return;
                 _cacheId = value;
             }
+        }
+
+        public X509Certificate2 X509Certificate2
+        {
+            get { return _x509Certificate2; }
+            set { _x509Certificate2 = value; }
         }
 
         /// <summary>
