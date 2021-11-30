@@ -256,6 +256,9 @@ namespace NFe.Servicos
 
             SalvarArquivoXml(chave + "-sit.xml", retornoXmlString);
 
+            // Card #Sin1028: está faltando o tipo de ambiente (tpAmb) na classe de retorno
+            retConsulta.tpAmb = _cFgServico.tpAmb;
+
             return new RetornoNfeConsultaProtocolo(pedConsulta.ObterXmlString(), retConsulta.ObterXmlString(),
                 retornoXmlString, retConsulta);
 
