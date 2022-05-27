@@ -5277,21 +5277,12 @@ Substituição Tributaria;</xs:documentation>
 															</xs:element>
 															<xs:element name="tBand" minOccurs="0">
 																<xs:annotation>
-																	<xs:documentation>Bandeira da operadora de cartão de crédito/débito:01–Visa; 02–Mastercard; 03–American Express; 04–Sorocred;05-Diners Club;06-Elo;07-Hipercard;08-Aura;09-Cabal;99–Outros</xs:documentation>
+																	<xs:documentation>Bandeira da operadora de cartão</xs:documentation>
 																</xs:annotation>
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">
 																		<xs:whiteSpace value="preserve"/>
-																		<xs:enumeration value="01"/>
-																		<xs:enumeration value="02"/>
-																		<xs:enumeration value="03"/>
-																		<xs:enumeration value="04"/>
-																		<xs:enumeration value="05"/>
-																		<xs:enumeration value="06"/>
-																		<xs:enumeration value="07"/>
-																		<xs:enumeration value="08"/>
-																		<xs:enumeration value="09"/>
-																		<xs:enumeration value="99"/>
+																		<xs:pattern value="[0-9]{2}"/>
 																	</xs:restriction>
 																</xs:simpleType>
 															</xs:element>
