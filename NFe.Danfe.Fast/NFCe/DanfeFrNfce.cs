@@ -31,19 +31,17 @@
 /* Rua Comendador Francisco josé da Cunha, 111 - Itabaiana - SE - 49500-000     */
 /********************************************************************************/
 
-using FastReport;
-using FastReport.Barcode;
+using DFe.Utils;
 using NFe.Classes;
 using NFe.Danfe.Base.NFCe;
-using NFe.Utils.InformacoesSuplementares;
-using System.IO;
+using Shared.DFe.Danfe;
 
 namespace NFe.Danfe.Fast.NFCe
 {
-	/// <summary>
-	/// Classe responsável pela impressão do DANFE da NFCe em Fast Reports
-	/// </summary>
-	public class DanfeFrNfce : DanfeBase
+    /// <summary>
+    /// Classe responsável pela impressão do DANFE da NFCe em Fast Reports
+    /// </summary>
+    public class DanfeFrNfce : DanfeFastBase
     {
         /// <summary>
         /// Construtor da classe responsável pela impressão do DANFE da NFCe em Fast Reports
@@ -56,38 +54,14 @@ namespace NFe.Danfe.Fast.NFCe
         /// <param name="textoRodape">Texto para ser impresso no final do documento</param>
         public DanfeFrNfce(nfeProc proc, ConfiguracaoDanfeNfce configuracaoDanfeNfce, string cIdToken, string csc, string arquivoRelatorio = "", string textoRodape = "")
         {
-            #region Define as variáveis que serão usadas no relatório (dúvidas a respeito do fast reports consulte a documentação em https://www.fast-report.com/pt/product/fast-report-net/documentation/)
+            byte[] frx = null;
+            if (string.IsNullOrWhiteSpace(arquivoRelatorio))
+            {
+                const string caminho = @"NFCe\NFCe.frx";
+                frx = FrxFileHelper.TryGetFrxFile(caminho);
+            }
 
-            Relatorio = new Report();
-            Relatorio.RegisterData(new[] { proc }, "NFCe", 20);
-            Relatorio.GetDataSource("NFCe").Enabled = true;
-            if (string.IsNullOrEmpty(arquivoRelatorio))
-                Relatorio.Load(new MemoryStream(Properties.Resources.NFCe));
-            else
-                Relatorio.Load(arquivoRelatorio);
-            Relatorio.SetParameterValue("NfceDetalheVendaNormal", configuracaoDanfeNfce.DetalheVendaNormal);
-            Relatorio.SetParameterValue("NfceDetalheVendaContigencia", configuracaoDanfeNfce.DetalheVendaContigencia);
-            Relatorio.SetParameterValue("NfceImprimeDescontoItem", configuracaoDanfeNfce.ImprimeDescontoItem);
-            Relatorio.SetParameterValue("NfceModoImpressao", configuracaoDanfeNfce.ModoImpressao);
-            Relatorio.SetParameterValue("NfceCancelado", configuracaoDanfeNfce.DocumentoCancelado);
-            Relatorio.SetParameterValue("NfceLayoutQrCode", configuracaoDanfeNfce.NfceLayoutQrCode);
-            ((ReportPage) Relatorio.FindObject("PgNfce")).LeftMargin = configuracaoDanfeNfce.MargemEsquerda;
-            ((ReportPage)Relatorio.FindObject("PgNfce")).RightMargin = configuracaoDanfeNfce.MargemDireita;
-            ((PictureObject) Relatorio.FindObject("poEmitLogo")).Image = configuracaoDanfeNfce.ObterLogo();
-            ((TextObject)Relatorio.FindObject("txtUrl")).Text = string.IsNullOrEmpty(proc.NFe.infNFeSupl.urlChave) ? proc.NFe.infNFeSupl.ObterUrlConsulta(proc.NFe, configuracaoDanfeNfce.VersaoQrCode) : proc.NFe.infNFeSupl.urlChave;
-            ((BarcodeObject)Relatorio.FindObject("bcoQrCode")).Text = proc.NFe.infNFeSupl  == null ? proc.NFe.infNFeSupl.ObterUrlQrCode(proc.NFe, configuracaoDanfeNfce.VersaoQrCode, cIdToken, csc) : proc.NFe.infNFeSupl.qrCode;
-            ((BarcodeObject)Relatorio.FindObject("bcoQrCodeLateral")).Text = proc.NFe.infNFeSupl == null ? proc.NFe.infNFeSupl.ObterUrlQrCode(proc.NFe, configuracaoDanfeNfce.VersaoQrCode, cIdToken, csc) : proc.NFe.infNFeSupl.qrCode;
-
-			// A VERSÃO DO FASTREPORT OPEN SOURCE QUE USAMOS NO SINFE NÃO PERMITE IMPRESSÃO LOCAL - TODO O CODIGO ABAIXO SERÁ COMENTADO
-
-            //Segundo o Manual de Padrões Técnicos do DANFE - NFC - e e QR Code, versão 3.2, página 9, nos casos de emissão em contingência deve ser impresso uma segunda cópia como via do estabelecimento
-            //if (configuracaoDanfeNfce.SegundaViaContingencia)
-            //    Relatorio.PrintSettings.Copies = (proc.NFe.infNFe.ide.tpEmis == TipoEmissao.teNormal | (proc.protNFe != null && proc.protNFe.infProt != null && NfeSituacao.Autorizada(proc.protNFe.infProt.cStat))
-            //    /*Se a NFe for autorizada, mesmo que seja em contingência, imprime somente uma via*/ ) ? 1 : 2;
-
-            #endregion
-
-            //Relatorio = DanfeSharedHelper.GenerateDanfeNfceReport(proc, configuracaoDanfeNfce, cIdToken, csc, Properties.Resources.NFCe, arquivoRelatorio);
+            Relatorio = DanfeSharedHelper.GenerateDanfeNfceReport(proc, configuracaoDanfeNfce, cIdToken, csc, frx, arquivoRelatorio, textoRodape);
         }
 
         /// <summary>
