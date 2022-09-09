@@ -1,7 +1,7 @@
 ﻿using DFe.Classes.Flags;
 using DFe.Utils;
 using DFe.Utils.Assinatura;
-using DFe.Utils.Standard;
+using DFe.Utils;
 using NFe.Classes;
 using NFe.Classes.Informacoes;
 using NFe.Classes.Informacoes.Cobranca;
@@ -49,7 +49,7 @@ namespace NFe.AppTeste.NetCore
             Console.WriteLine("Bem vindo ao demo do projeto NF-e com suporte ao NetStandard 2.0!");
             Console.WriteLine("Este exemplo necessita do arquivo Configuração.xml já criado.");
             Console.WriteLine("Caso necessite criar, utilize o app 'NFe.AppTeste'. e clique em 'Salvar Configuração para Arquivo'");
-            Console.WriteLine("Em seguida copie o 'configuração.xml' para a pasta bin\\Debug\\netcoreapp2.2 deste projeto.\n");
+            Console.WriteLine("Em seguida copie o 'configuração.xml' para a pasta bin\\Debug\\net5 deste projeto.\n");
             Console.ReadKey();
 
             //inicializa configuracoes bases (podem ser carregadas novas aqui posteriormente com a opção 99)
@@ -150,7 +150,7 @@ namespace NFe.AppTeste.NetCore
                 string password = Console.ReadLine();
 
                 Console.Clear();
-                var cert = CertificadoDigitaoUtil.ObterDoCaminho(caminho, password);
+                var cert = CertificadoDigitalUtils.ObterDoCaminho(caminho, password);
                 _configuracoes.CfgServico.Certificado.Serial = cert.SerialNumber;
                 Console.WriteLine("Certificado encontrado e carregado...");
                 Console.WriteLine("Issuer: " + cert.IssuerName);
