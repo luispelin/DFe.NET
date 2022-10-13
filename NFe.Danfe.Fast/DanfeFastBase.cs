@@ -1,6 +1,8 @@
 ﻿using FastReport;
+using FastReport.Export.Image;
 using FastReport.Export.Pdf;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace NFe.Danfe.Fast
@@ -49,6 +51,7 @@ namespace NFe.Danfe.Fast
             Relatorio.Prepare();
             Relatorio.Export(new PDFExport(), arquivo);
         }
+
         /// <summary>
         /// Converte o DANFE para PDF e copia para o stream
         /// </summary>
@@ -94,6 +97,61 @@ namespace NFe.Danfe.Fast
             Relatorio.Prepare();
             Relatorio.Export(exportBase, outputStream);
             outputStream.Position = 0;
+        }
+
+        public void ExportarPdf2Image(string arquivo)
+        {
+            Relatorio.Prepare();
+            Relatorio.Export(new ImageExport() { ImageFormat = ImageExportFormat.Png }, arquivo);
+        }
+
+        public IList<byte[]> ExportarPdf2ImagePng()
+        {
+            IList<byte[]> lst = new List<byte[]>();
+            if (Relatorio.Prepare())
+            {
+                for (int i = 0; i < Relatorio.PreparedPages.Count; i++)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        Relatorio.Export(new ImageExport()
+                        {
+                            ImageFormat = ImageExportFormat.Png,
+                            PageRange = PageRange.Current,
+                            Resolution = 168,
+                            CurPage = i + 1
+                        }, ms);
+                        lst.Add(ms.ToArray());
+                    }
+                }
+            }
+
+            return lst;
+        }
+
+        public IList<byte[]> ExportarPdf2ImageJpeg()
+        {
+            IList<byte[]> lst = new List<byte[]>();
+            if (Relatorio.Prepare())
+            {
+                for (int i = 0; i < Relatorio.PreparedPages.Count; i++)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        Relatorio.Export(new ImageExport()
+                        {
+                            ImageFormat = ImageExportFormat.Jpeg,
+                            JpegQuality = 100,
+                            Resolution = 168,
+                            PageRange = PageRange.Current,
+                            CurPage = i + 1
+                        }, ms);
+                        lst.Add(ms.ToArray());
+                    }
+                }
+            }
+
+            return lst;
         }
     }
 }
