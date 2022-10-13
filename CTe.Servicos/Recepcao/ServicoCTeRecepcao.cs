@@ -94,8 +94,22 @@ namespace CTe.Servicos.Recepcao
                 {
                     const string razaoSocial = "CT-E EMITIDO EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
 
-                    cte.infCte.rem.xNome = razaoSocial;
-                    cte.infCte.dest.xNome = razaoSocial;
+                    if (cte.infCte.rem != null)
+                    {
+                        cte.infCte.rem.xNome = razaoSocial;
+                    }
+                    if (cte.infCte.dest != null)
+                    {
+                        cte.infCte.dest.xNome = razaoSocial;
+                    }
+                    if (cte.infCte.exped != null)
+                    {
+                        cte.infCte.exped.xNome = razaoSocial;
+                    }
+                    if (cte.infCte.receb != null)
+                    {
+                        cte.infCte.receb.xNome = razaoSocial;
+                    }
                 }
             }
 
