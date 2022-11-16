@@ -41,29 +41,35 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
 {
     public class aereo : ContainerModal
     {
+        [XmlElement(Order = 1)]
         public string nMinu { get; set; }
 
+        [XmlElement(Order = 2)]
         public string nOCA { get; set; }
 
         [XmlIgnore]
         public DateTime dPrevAereo { get; set; }
 
-        [XmlElement(ElementName = "dPrevAereo")]
+        [XmlElement(ElementName = "dPrevAereo", Order = 3)]
         public string ProxydPrevAereo
         {
             get { return dPrevAereo.ParaDataString(); }
-            set { dPrevAereo = Convert.ToDateTime(dPrevAereo); }
+            set { dPrevAereo = Convert.ToDateTime(value); }
         }
 
+        [XmlElement(Order = 7)]
         public string xLAgEmi { get; set; }
 
+        [XmlElement(Order = 8)]
         public string IdT { get; set; }
 
+        [XmlElement(Order = 4)]
         public natCarga natCarga { get; set; }
 
+        [XmlElement(Order = 5)]
         public tarifa tarifa { get; set; }
 
-        [XmlElement(ElementName = "peri")]
+        [XmlElement(ElementName = "peri", Order = 6)]
         public List<aereoPeri> peri { get; set; }
     }
 }

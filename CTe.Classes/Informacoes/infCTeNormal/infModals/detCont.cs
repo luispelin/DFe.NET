@@ -39,13 +39,14 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
 {
     public class detCont
     {
+        [XmlElement(Order = 1)]
         public string nCont { get; set; }
 
-        [XmlElement(ElementName = "lacre")]
+        [XmlElement(ElementName = "lacre", Order = 2)]
         public List<lacre> lacre { get; set; }
 
-        [XmlElement(ElementName = "infDoc")]
-        public List<infDocAquav> infDoc { get; set; }
+        [XmlElement(ElementName = "infDoc", Order = 3)]
+        public infDocAquav infDoc { get; set; }
 
     }
 
@@ -66,7 +67,7 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
     public class infNFAquav
     {
         private decimal? _unidRat;
-        public short serie { get; set; }
+        public string serie { get; set; }
         public string nDoc { get; set; }
 
         public decimal? unidRat
