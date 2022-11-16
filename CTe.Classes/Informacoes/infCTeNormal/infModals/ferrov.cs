@@ -43,23 +43,29 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
     public class ferrov : ContainerModal
     {
         private decimal _vFrete;
+        [XmlElement(Order = 1)]
         public tpTraf tpTraf { get; set; }
 
+        [XmlElement(Order = 2)]
         public trafMut trafMut { get; set; }
 
+        [XmlElement(Order = 3)]
         public string fluxo { get; set; }
+
+        [XmlElement(Order = 4)]
         public string idTrem { get; set; }
 
+        [XmlIgnore]
         public decimal vFrete
         {
             get { return _vFrete.Arredondar(2); }
             set { _vFrete = value.Arredondar(2); }
         }
 
-        [XmlElement(ElementName = "ferroEnv")]
+        [XmlElement(ElementName = "ferroEnv", Order = 5)]
         public List<ferroEnv> ferroEnv { get; set; }
 
-        [XmlElement(ElementName = "detVag")]
+        [XmlElement(ElementName = "detVag", Order = 6)]
         public List<detVag> detVag { get; set; }
 
     }
@@ -67,9 +73,13 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
     public class trafMut
     {
         private decimal? _vFrete;
+        [XmlElement(Order = 1)]
         public respFat respFat { get; set; }
+
+        [XmlElement(Order = 2)]
         public ferrEmi ferrEmi { get; set; }
 
+        [XmlElement(Order = 3)]
         public decimal? vFrete
         {
             get { return _vFrete.Arredondar(2); }
@@ -77,11 +87,14 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
         }
 
         public bool vFreteSpecified { get { return vFrete.HasValue; } }
+
+        [XmlElement(Order = 4)]
         public string chCTeFerroOrigem { get; set; }
 
-        [XmlElement(ElementName = "ferroEnv")]
+        [XmlElement(ElementName = "ferroEnv", Order = 5)]
         public List<ferroEnv> ferroEnv { get; set; }
 
+        [XmlElement(Order = 6)]
         public string fluxo { get; set; }
     }
 

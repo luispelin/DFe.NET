@@ -43,35 +43,55 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
         private decimal _vPrest;
         private decimal _vAfrmm;
 
+        [XmlElement(Order = 1)]
         public decimal vPrest
         {
             get { return _vPrest.Arredondar(2); }
             set { _vPrest = value.Arredondar(2); }
         }
 
+        [XmlElement(Order = 2)]
         public decimal vAFRMM
         {
             get { return _vAfrmm.Arredondar(2); }
             set { _vAfrmm = value.Arredondar(2); }
         }
 
+        [XmlElement(Order = 10)]
         public string nBooking { get; set; }
+
+        [XmlElement(Order = 11)]
         public string nCtrl { get; set; }
+
+        [XmlElement(Order = 3)]
         public string xNavio { get; set; }
 
-        [XmlElement(ElementName = "balsa")]
+        [XmlElement(ElementName = "balsa", Order = 4)]
         public List<balsa> balsa { get; set; }
 
+        [XmlElement(Order = 5)]
         public string nViag { get; set; }
+
+        [XmlElement(Order = 6)]
         public string direc { get; set; }
+
+        [XmlElement(Order = 12)]
         public string prtEmb { get; set; }
+
+        [XmlElement(Order = 13)]
         public string prtTrans { get; set; }
+
+        [XmlElement(Order = 14)]
         public string prtDest { get; set; }
+
+        [XmlElement(Order = 9)]
         public tpNav? tpNav { get; set; }
         public bool tpNavSpecified { get { return tpNav.HasValue; } }
+
+        [XmlElement(Order = 7)]
         public string irin { get; set; }
 
-        [XmlElement(ElementName = "detCont")]
-        public List<detCont> detcont { get; set; }
+        [XmlElement(ElementName = "detCont", Order = 8)]
+        public List<detCont> detCont { get; set; }
     }
 }

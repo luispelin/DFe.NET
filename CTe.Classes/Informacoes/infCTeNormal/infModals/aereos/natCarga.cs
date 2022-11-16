@@ -32,6 +32,7 @@
 /********************************************************************************/
 
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace CTe.Classes.Informacoes.infCTeNormal.infModals.aereos
 {
@@ -39,7 +40,10 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals.aereos
     {
         public string xDime { get; set; }
 
+        [XmlElement(ElementName = "cInfManu")]
         public List<string> cInfManu { get; set; }
+
+        [XmlIgnore]
         public List<string> cIMP { get; set; }
     }
 }

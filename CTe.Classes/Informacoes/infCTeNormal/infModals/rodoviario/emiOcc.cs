@@ -48,6 +48,7 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals.rodoviario
         [XmlIgnore]
         public Estado UF { get; set; }
 
+        [XmlElement(ElementName = "UF")]
         public string ProxyUF
         {
             get

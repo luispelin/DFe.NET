@@ -43,12 +43,13 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
 {
     public class rodo : ContainerModal
     {
+        [XmlElement(Order = 1)]
         public string RNTRC { get; set; }
 
         [XmlIgnore]
         public DateTime? dPrev { get; set; }
 
-        [XmlElement(ElementName = "dPrev")]
+        [XmlElement(ElementName = "dPrev", Order = 3)]
         public string ProxydPrev {
             get
             {
@@ -63,24 +64,26 @@ namespace CTe.Classes.Informacoes.infCTeNormal.infModals
             }
         }
 
+        [XmlElement(Order = 4)]
         public lota? lota { get; set; }
         public bool lotaSpecified { get { return lota.HasValue; } }
 
+        [XmlElement(Order = 5)]
         public string CIOT { get; set; }
 
-        [XmlElement("occ")]
+        [XmlElement("occ", Order = 2)]
         public List<occ> occ;
 
-        [XmlElement(ElementName = "valePed")]
+        [XmlElement(ElementName = "valePed", Order = 6)]
         public List<valePed> valePed { get; set; }
 
-        [XmlElement(ElementName = "veic")]
+        [XmlElement(ElementName = "veic", Order = 7)]
         public List<veic> veic { get; set; }
 
-        [XmlElement(ElementName = "lacRodo")]
+        [XmlElement(ElementName = "lacRodo", Order = 8)]
         public List<lacRodo> lacRodo { get; set; }
 
-        [XmlElement(ElementName = "moto")]
+        [XmlElement(ElementName = "moto", Order = 9)]
         public List<moto> moto { get; set; }
 
         public bool ShouldSerializeveic()
