@@ -56,7 +56,15 @@ namespace CTe.Servicos.Eventos
             var id = new StringBuilder("ID");
             id.Append((int)cTeTipoEvento);
             id.Append(chave);
-            id.Append(sequenciaEvento.ToString("D2"));
+            // versao 4.00 - nSeqEvento passou a ter 3 digitos
+            if (configServico.VersaoLayout == Classes.Servicos.Tipos.versao.ve400)
+            {
+                id.Append(sequenciaEvento.ToString("D3"));
+            }
+            else
+            {
+                id.Append(sequenciaEvento.ToString("D2"));
+            }
 
             return new eventoCTe
             {

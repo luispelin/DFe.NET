@@ -61,6 +61,50 @@ namespace CTe.Wsdl.Recepcao
             };
             return await RequestBuilderAndSender.ExecuteAsync(soapEnvelope, configuracao, TipoEvento.CTeRecepcao, "retEnviCte");
         }
+
+    }
+
+    public class CteRecepcaoSinc
+    {
+        //Envelope SOAP para envio
+        private SoapEnvelopeSinc soapEnvelope;
+
+        //Configurações do WSDL para estabelecimento da comunicação
+        private WsdlConfiguracao configuracao;
+
+        /// <summary>
+        /// Cria o cabeçalho do envelope a ser enviado e atribui as configurações do WSDL.
+        /// </summary>
+        /// <param name="configuracao"></param>
+        public CteRecepcaoSinc(WsdlConfiguracao configuracao)
+        {
+            if (configuracao == null)
+                throw new ArgumentNullException();
+
+            this.configuracao = configuracao;
+            soapEnvelope = new SoapEnvelopeSinc();
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        }
+
+        /// <summary>
+        /// Metodo de recepcao de mensagens de envio de CTe (versao 4.00 - somente sincrono) 
+        /// </summary>
+        /// <param name="cteDadosMsg"></param>
+        /// <returns></returns>
+        public XmlNode cteRecepcao(XmlNode cteDadosMsg)
+        {
+            // versao 4.00 - a mensagem deve ser compactada 
+            var zipped = DFe.Utils.Compressao.Zip(cteDadosMsg.InnerXml);
+            string conteudo = Convert.ToBase64String(zipped);
+
+            soapEnvelope.body = new ResponseBodyV4<string>
+            {
+                cteDadosMsg = conteudo
+            };
+
+            return RequestBuilderAndSender.Execute(soapEnvelope, configuracao, TipoEvento.CTeRecepcaoSinc, "retCTe");
+        }
+
     }
 
     /// <summary>
@@ -74,6 +118,19 @@ namespace CTe.Wsdl.Recepcao
 
         [XmlElement(ElementName = "Body", Namespace = "http://www.w3.org/2003/05/soap-envelope")]
         public ResponseBody<XmlNode> body { get; set; }
+    }
+
+    /// <summary>
+    /// Classe base para a serialização no formato do envelope SOAP. (versao 4.00 deixou de ter header)
+    /// </summary>
+    [XmlRoot(ElementName = "Envelope", Namespace = "http://www.w3.org/2003/05/soap-envelope")]
+    public class SoapEnvelopeSinc : CommonSoapEnvelope
+    {
+        [XmlElement(ElementName = "operation", Namespace = "http://www.w3.org/2003/05/soap-envelope")]
+        public XmlNode operation { get; set; }
+
+        [XmlElement(ElementName = "Body", Namespace = "http://www.w3.org/2003/05/soap-envelope")]
+        public ResponseBodyV4<string> body { get; set; }
     }
 
     /// <summary>
@@ -91,6 +148,15 @@ namespace CTe.Wsdl.Recepcao
     public class ResponseBody<T> : CommonResponseBody
     {
         [XmlElement(Namespace = "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao")]
+        public T cteDadosMsg { get; set; }
+    }
+
+    /// <summary>
+    /// Classe para o corpo do Envelope SOAP (versao 4.00)
+    /// </summary>
+    public class ResponseBodyV4<T> : CommonResponseBody
+    {
+        [XmlElement(Namespace = "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4")]
         public T cteDadosMsg { get; set; }
     }
 }

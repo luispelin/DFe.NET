@@ -51,6 +51,11 @@ namespace CTe.Servicos.Factory
         public static CteStatusServico CriaWsdlCteStatusServico(ConfiguracaoServico configuracaoServico = null)
         {
             var url = UrlHelper.ObterUrlServico(configuracaoServico).CteStatusServico;
+            var configServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
+            if (configServico.VersaoLayout == Classes.Servicos.Tipos.versao.ve400)
+            {
+                url = UrlHelper.ObterUrlServico(configuracaoServico).CTeStatusServicoV4;
+            }
 
             var configuracaoWsdl = CriaConfiguracao(url, configuracaoServico);
 
@@ -60,6 +65,11 @@ namespace CTe.Servicos.Factory
         public static CteConsulta CriaWsdlConsultaProtocolo(ConfiguracaoServico configuracaoServico = null)
         {
             var url = UrlHelper.ObterUrlServico(configuracaoServico).CteConsulta;
+            var configServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
+            if (configServico.VersaoLayout == Classes.Servicos.Tipos.versao.ve400)
+            {
+                url = UrlHelper.ObterUrlServico(configuracaoServico).CTeConsultaV4;
+            }
 
             var configuracaoWsdl = CriaConfiguracao(url, configuracaoServico);
 
@@ -93,6 +103,15 @@ namespace CTe.Servicos.Factory
             return new CteRecepcao(configuracaoWsdl);
         }
 
+        public static CteRecepcaoSinc CriaWsdlCteRecepcaoSinc(ConfiguracaoServico configuracaoServico = null)
+        {
+            var url = UrlHelper.ObterUrlServico(configuracaoServico).CTeRecepcaoSincV4;
+
+            var configuracaoWsdl = CriaConfiguracao(url, configuracaoServico);
+
+            return new CteRecepcaoSinc(configuracaoWsdl);
+        }
+
         public static CteRecepcaoEvento CriaWsdlCteEvento(ConfiguracaoServico configuracaoServico = null)
         {
             var url = UrlHelper.ObterUrlServico(configuracaoServico).CteRecepcaoEvento;
@@ -102,6 +121,14 @@ namespace CTe.Servicos.Factory
             return new CteRecepcaoEvento(configuracaoWsdl);
         }
 
+        public static CteRecepcaoEventoV4 CriaWsdlCteEventoV4(ConfiguracaoServico configuracaoServico = null)
+        {
+            var url = UrlHelper.ObterUrlServico(configuracaoServico).CTeRecepcaoEventoV4;
+
+            var configuracaoWsdl = CriaConfiguracao(url, configuracaoServico);
+
+            return new CteRecepcaoEventoV4(configuracaoWsdl);
+        }
 
         public static CTeDistDFeInteresse CriaWsdlCTeDistDFeInteresse(ConfiguracaoServico configuracaoServico = null)
         {

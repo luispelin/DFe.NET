@@ -42,5 +42,31 @@ namespace CTe.Servicos.Enderecos
         public string CteStatusServico { get; set; }
         public string CTeDistribuicaoDFe { get; set; }
         public string QrCode { get; set; }
+
+        /// <summary>
+        /// CTe versao 4.00 - Servico de Recepcao de CTe de Transporte de Carga (modelo 57)
+        /// </summary>
+        public string CTeRecepcaoSincV4 { get; set; }
+        /// <summary>
+        /// CTe versao 4.00 - Servico de Recepcao de CTe Outros Servicos (modelo 67)
+        /// </summary>
+        public string CTeRecepcaoOSV4 { get; set; }
+        /// <summary>
+        /// CTe versao 4.00 - Servico de Recepcao de GTVe (modelo 64)
+        /// </summary>
+        public string CTeRecepcaoGTVeV4 { get; set; }
+        /// <summary>
+        /// CTe versao 4.00 - Servico de Consulta Situacao de CTe
+        /// </summary>
+        public string CTeConsultaV4 { get; set; }
+        /// <summary>
+        /// CTe versao 4.00 - Servico de Consulta Status do Servico de Autorizacao
+        /// </summary>
+        public string CTeStatusServicoV4 { get; set; }
+        /// <summary>
+        /// CTe versao 4.00 - Servico de Recepcao de mensagem de eventos de CTe de Carga (57), Outros Servicos (67) ou CTVe (64)
+        /// </summary>
+        public string CTeRecepcaoEventoV4 { get; set; }
+
     }
 }

@@ -36,12 +36,14 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Xml;
 using CTe.Classes;
 using CTe.Classes.Informacoes;
 using CTe.Classes.Informacoes.infCTeNormal.infModals;
 using CTe.Classes.Informacoes.Tipos;
 using CTe.Classes.Servicos.Tipos;
 using CTe.Utils.Validacao;
+using DFe.Classes.Entidades;
 using DFe.Utils;
 using DFe.Utils.Assinatura;
 using CteEletronica = CTe.Classes.CTe;
@@ -104,10 +106,13 @@ namespace CTe.Utils.CTe
                 case versao.ve300:
                     Validador.Valida(xmlValidacao, "cte_v3.00.xsd", configuracaoServico);
                     break;
+                case versao.ve400:
+                    Validador.Valida(xmlValidacao, "cte_v4.00.xsd", configuracaoServico);
+                    break;
                 default:
                     throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
                                                         "a versão está inválida, somente é permitido " +
-                                                        "versão 2.00 é 3.00");
+                                                        "versão 2.00, 3.00 e 4.00");
             }
 
             if (cte.infCte.ide.tpCTe != tpCTe.Anulacao  && cte.infCte.ide.tpCTe != tpCTe.Complemento) // Ct-e do Tipo Anulação/Complemento não tem Informações do Modal
@@ -180,13 +185,49 @@ namespace CTe.Utils.CTe
 
                         if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(rodoOS))
                         {
-                            Validador.Valida(xmlModal, "cteModalRodoviarioOS_v.3.00.xsd", configuracaoServico);
+                            Validador.Valida(xmlModal, "cteModalRodoviarioOS_v3.00.xsd", configuracaoServico);
+                        }
+                        break;
+                    case versaoModal.veM400:
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(aereo))
+                        {
+                            Validador.Valida(xmlModal, "cteModalAereo_v4.00.xsd", configuracaoServico);
+                        }
+
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(aquav))
+                        {
+                            Validador.Valida(xmlModal, "cteModalAquaviario_v4.00.xsd", configuracaoServico);
+                        }
+
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(duto))
+                        {
+                            Validador.Valida(xmlModal, "cteModalDutoviario_v4.00.xsd", configuracaoServico);
+                        }
+
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(ferrov))
+                        {
+                            Validador.Valida(xmlModal, "cteModalFerroviario_v4.00.xsd", configuracaoServico);
+                        }
+
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(rodo))
+                        {
+                            Validador.Valida(xmlModal, "cteModalRodoviario_v4.00.xsd", configuracaoServico);
+                        }
+
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(multimodal))
+                        {
+                            Validador.Valida(xmlModal, "cteMultimodal_v4.00.xsd", configuracaoServico);
+                        }
+
+                        if (cte.infCte.infCTeNorm.infModal.ContainerModal.GetType() == typeof(rodoOS))
+                        {
+                            Validador.Valida(xmlModal, "cteModalRodoviarioOS_v4.00.xsd", configuracaoServico);
                         }
                         break;
                     default:
                         throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
                                                             "a versão está inválida, somente é permitido " +
-                                                            "versão 2.00 é 3.00");
+                                                            "versão 2.00, 3.00 e 4.00");
                 }
             }
         }
@@ -263,7 +304,7 @@ namespace CTe.Utils.CTe
 
         private static byte[] CreateSignaturePkcs1(X509Certificate2 certificadoDigital, byte[] Value)
         {
-            RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)certificadoDigital.PrivateKey;
+            var rsa = certificadoDigital.GetRSAPrivateKey();
 
             RSAPKCS1SignatureFormatter rsaF = new RSAPKCS1SignatureFormatter(rsa);
 
@@ -291,6 +332,23 @@ namespace CTe.Utils.CTe
             FuncoesXml.ClasseParaArquivoXml(cte, arquivoSalvar);
         }
 
+        public static XmlDocument CriaRequestWs(this CteEletronica cte, ConfiguracaoServico configuracaoServico = null)
+        {
+            var request = new XmlDocument();
+
+            var xml = cte.ObterXmlString();
+
+            var instanciaServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
+
+            if (instanciaServico.cUF == Estado.PR
+                || instanciaServico.cUF == Estado.MT)
+                //Caso o lote seja enviado para o PR, colocar o namespace nos elementos <CTe> do lote, pois o serviço do PR o exige, conforme https://github.com/adeniltonbs/Zeus.Net.NFe.NFCe/issues/456
+                xml = xml.Replace("<CTe>", "<CTe xmlns=\"http://www.portalfiscal.inf.br/cte\">");
+
+            request.LoadXml(xml);
+
+            return request;
+        }
 
     }
 }

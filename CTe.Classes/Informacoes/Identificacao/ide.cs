@@ -114,6 +114,8 @@ namespace CTe.Classes.Informacoes.Identificacao
                         return dhEmi.ParaDataHoraStringSemUtc();
                     case versao.ve300:
                         return dhEmi.ParaDataHoraStringUtc();
+                    case versao.ve400:
+                        return dhEmi.ParaDataHoraStringUtc();
                     default:
                         throw new InvalidOperationException("Versão Inválida para CT-e");
                 }

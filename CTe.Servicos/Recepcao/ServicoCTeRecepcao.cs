@@ -82,6 +82,53 @@ namespace CTe.Servicos.Recepcao
             return retorno;
         }
 
+        /// <summary>
+        /// Servico sincrono destinado a recepcao de mensagens de envio de CTe
+        /// </summary>
+        /// <param name="cte"></param>
+        /// <param name="configuracaoServico"></param>
+        /// <returns></returns>
+        public retCTe CTeRecepcaoSincV4(CTeEletronico cte, ConfiguracaoServico configuracaoServico = null)
+        {
+            #region prepara cte
+            var instanciaConfiguracao = configuracaoServico ?? ConfiguracaoServico.Instancia;
+
+            if (instanciaConfiguracao.tpAmb == TipoAmbiente.Homologacao)
+            {
+                const string razaoSocial = "CTE EMITIDO EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+                if (cte.infCte.rem != null)
+                {
+                    cte.infCte.rem.xNome = razaoSocial;
+                }
+                if (cte.infCte.dest != null)
+                {
+                    cte.infCte.dest.xNome = razaoSocial;
+                }
+                if (cte.infCte.exped != null)
+                {
+                    cte.infCte.exped.xNome = razaoSocial;
+                }
+                if (cte.infCte.receb != null)
+                {
+                    cte.infCte.receb.xNome = razaoSocial;
+                }
+            }
+
+            cte.infCte.ide.tpEmis = instanciaConfiguracao.TipoEmissao;
+            cte.Assina(instanciaConfiguracao);
+            cte.infCTeSupl = cte.QrCode(instanciaConfiguracao.X509Certificate2, Encoding.UTF8, instanciaConfiguracao.IsAdicionaQrCode, UrlHelper.ObterUrlQrCode(instanciaConfiguracao));
+            cte.ValidaSchema(instanciaConfiguracao);
+            cte.SalvarXmlEmDisco(instanciaConfiguracao);
+            #endregion //prepara cte
+
+            var webService = WsdlFactory.CriaWsdlCteRecepcaoSinc(configuracaoServico);
+            var retornoXml = webService.cteRecepcao(cte.CriaRequestWs(configuracaoServico));
+            var retorno = retCTe.LoadXml(retornoXml.OuterXml, cte);
+            retorno.SalvarXmlEmDisco(configuracaoServico);
+
+            return retorno;
+        }
+
         private static enviCTe PreparaEnvioCTe(int lote, List<CTeEletronico> cteEletronicosList, ConfiguracaoServico configuracaoServico = null)
         {
             var instanciaConfiguracao = configuracaoServico ?? ConfiguracaoServico.Instancia;
