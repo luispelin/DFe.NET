@@ -95,7 +95,12 @@ namespace CTe.Classes.Protocolo
         public string xMotivo { get; set; }
 
         /// <summary>
-        ///     PR13 - Assinatura XML do grupo identificado pelo atributo “Id”
+        ///     PR13 - Grupo reservado para envio de mensagem do Fisco para o contribuinte
+        /// </summary>
+        public infFisco infFisco { get; set; }
+
+        /// <summary>
+        ///     PR16 - Assinatura XML do grupo identificado pelo atributo “Id”
         ///     A decisão de assinar a mensagem fica a critério da UF interessada.
         /// </summary>
         public Signature Signature { get; set; }

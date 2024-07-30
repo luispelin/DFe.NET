@@ -57,10 +57,13 @@ namespace CTe.Utils.CTe
                 case versao.ve300:
                     Validador.Valida(xmlValidacao, "enviCTe_v3.00.xsd", configuracaoServico);
                     break;
+                case versao.ve400:
+                    // nao existe arquivo "enviCTe_v4.00.xsd"
+                    break;
                 default:
                     throw new InvalidOperationException("Nos achamos um erro na hora de validar o schema, " +
                                                         "a versão está inválida, somente é permitido " +
-                                                        "versão 2.00 é 3.00");
+                                                        "versão 2.00, 3.00 e 4.00");
             }
         }
 

@@ -40,7 +40,7 @@ namespace CTe.Classes.Informacoes.Emitente
         public string IE { get; set; }
 
         /// <summary>
-        /// Versão 3.00 - Não é obrigatório
+        /// Versão 4.00 - Não é obrigatório
         /// </summary>
         public string IEST { get; set; }
 
@@ -49,5 +49,15 @@ namespace CTe.Classes.Informacoes.Emitente
         public string xFant { get; set; }
 
         public enderEmit enderEmit { get; set; }
+
+        /// <summary>
+        /// Versão 4.00 - inclusão do CRT - Código Regime Tributário
+        /// 1=Simples Nacional; 
+        /// 2=Simples Nacional, excesso sublimite de receita bruta; 
+        /// 3=Regime Normal; 
+        /// 4=Simples Nacional - Microempreendedor Individual – MEI.
+        /// </summary>
+        public byte CRT { get; set; }
+
     }
 }

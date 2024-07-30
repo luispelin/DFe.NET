@@ -100,6 +100,8 @@ namespace CTe.Classes.Servicos.Evento
                         return dhEvento.ParaDataHoraStringSemUtc();
                     case versao.ve300:
                         return dhEvento.ParaDataHoraStringUtc();
+                    case versao.ve400:
+                        return dhEvento.ParaDataHoraStringUtc();
                     default:
                         throw new InvalidOperationException("Versão Inválida para CT-e");
                 }

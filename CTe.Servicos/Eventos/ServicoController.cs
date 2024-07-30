@@ -62,8 +62,18 @@ namespace CTe.Servicos.Eventos
             evento.ValidarSchema(configuracaoServico);
             evento.SalvarXmlEmDisco(configuracaoServico);
 
-            var webService = WsdlFactory.CriaWsdlCteEvento(configuracaoServico);
-            var retornoXml = webService.cteRecepcaoEvento(evento.CriaXmlRequestWs());
+            var configuracao = configuracaoServico ?? ConfiguracaoServico.Instancia;
+            System.Xml.XmlNode retornoXml;
+            if (configuracao.VersaoLayout == Classes.Servicos.Tipos.versao.ve400)
+            {
+                var webService = WsdlFactory.CriaWsdlCteEventoV4(configuracaoServico);
+                retornoXml = webService.cteRecepcaoEvento(evento.CriaXmlRequestWs());
+            }
+            else
+            {
+                var webService = WsdlFactory.CriaWsdlCteEvento(configuracaoServico);
+                retornoXml = webService.cteRecepcaoEvento(evento.CriaXmlRequestWs());
+            }
 
             var retorno = retEventoCTe.LoadXml(retornoXml.OuterXml, evento);
             retorno.SalvarXmlEmDisco(configuracaoServico);
@@ -78,8 +88,18 @@ namespace CTe.Servicos.Eventos
             evento.ValidarSchema(configuracaoServico);
             evento.SalvarXmlEmDisco(configuracaoServico);
 
-            var webService = WsdlFactory.CriaWsdlCteEvento(configuracaoServico);
-            var retornoXml = await webService.cteRecepcaoEventoAsync(evento.CriaXmlRequestWs());
+            var configuracao = configuracaoServico ?? ConfiguracaoServico.Instancia;
+            System.Xml.XmlNode retornoXml;
+            if (configuracao.VersaoLayout == Classes.Servicos.Tipos.versao.ve400)
+            {
+                var webService = WsdlFactory.CriaWsdlCteEventoV4(configuracaoServico);
+                retornoXml = await webService.cteRecepcaoEventoAsync(evento.CriaXmlRequestWs());
+            }
+            else
+            {
+                var webService = WsdlFactory.CriaWsdlCteEvento(configuracaoServico);
+                retornoXml = await webService.cteRecepcaoEventoAsync(evento.CriaXmlRequestWs());
+            }
 
             var retorno = retEventoCTe.LoadXml(retornoXml.OuterXml, evento);
             retorno.SalvarXmlEmDisco(configuracaoServico);
