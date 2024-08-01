@@ -121,14 +121,18 @@ namespace NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual.Tipos
 
     /// <summary>
     ///     <para>00 - Tributada integralmente</para>
+    ///     <para>02 - Tributação monofásica própria sobre combustíveis</para>
     ///     <para>10 - Tributada e com cobrança do ICMS por substituição tributária</para>
+    ///     <para>15 - Tributação monofásica própria e com responsabilidade pela retenção sobre combustíveis</para>
     ///     <para>20 - Com redução de base de cálculo</para>
     ///     <para>30 - Isenta ou não tributada e com cobrança do ICMS por substituição tributária</para>
     ///     <para>40 - Isenta</para>
     ///     <para>41 - Não tributada</para>
     ///     <para>50 - Suspensão</para>
     ///     <para>51 - Diferimento</para>
+    ///     <para>53 - Tributação monofásica sobre combustíveis com recolhimento diferido</para>
     ///     <para>60 - ICMS cobrado anteriormente por substituição tributária</para>
+    ///     <para>61 - Tributação monofásica sobre combustíveis cobrada anteriormente</para>
     ///     <para>70 - Com redução de base de cálculo e cobrança do ICMS por substituição tributária</para>
     ///     <para>90 - Outras</para>
     /// </summary>
@@ -142,11 +146,25 @@ namespace NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual.Tipos
         Cst00,
 
         /// <summary>
+        /// 02 - Tributação monofásica própria sobre combustíveis
+        /// </summary>
+        [Description("Tributação monofásica própria sobre combustíveis")]
+        [XmlEnum("02")]
+        Cst02,
+
+        /// <summary>
         /// 10 - Tributada e com cobrança do ICMS por substituição tributária
         /// </summary>
         [Description("Tributada e com cobrança do ICMS por substituição tributária")]
         [XmlEnum("10")]
         Cst10,
+
+        /// <summary>
+        /// 15 - Tributação monofásica própria e com responsabilidade pela retenção sobre combustíveis
+        /// </summary>
+        [Description("Tributação monofásica própria e com responsabilidade pela retenção sobre combustíveis")]
+        [XmlEnum("15")]
+        Cst15,
 
         /// <summary>
         /// 10 - Tributada e com cobrança do ICMS por substituição tributária
@@ -205,6 +223,13 @@ namespace NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual.Tipos
         Cst51,
 
         /// <summary>
+        /// 53 - Tributação monofásica sobre combustíveis com recolhimento diferido
+        /// </summary>
+        [Description("Tributação monofásica sobre combustíveis com recolhimento diferido")]
+        [XmlEnum("53")]
+        Cst53,
+
+        /// <summary>
         /// 60 - ICMS cobrado anteriormente por substituição tributária
         /// </summary>
         [Description("ICMS cobrado anteriormente por substituição tributária")]
@@ -215,6 +240,13 @@ namespace NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual.Tipos
         /// 60 - ICMS cobrado anteriormente por substituição tributária
         /// </summary>
         [XmlEnum("60")] CstRep60,
+
+        /// <summary>
+        /// 61 - Tributação monofásica sobre combustíveis cobrada anteriormente
+        /// </summary>
+        [Description("Tributação monofásica sobre combustíveis cobrada anteriormente")]
+        [XmlEnum("61")]
+        Cst61,
 
         /// <summary>
         /// 70 - Com redução de base de cálculo e cobrança do ICMS por substituição tributária
@@ -555,4 +587,59 @@ namespace NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual.Tipos
     }
 
     #endregion
+
+    #region Indicação do valor do ICMS desonerado deduz ou não no produto NT 2023.004
+
+    /// <summary>
+    ///     <para>0 - alor do ICMS desonerado (vICMSDeson) não deduz do valor do item (vProd) / total da NF-e</para>
+    ///     <para>1 - Valor do ICMS desonerado (vICMSDeson) deduz do valor do item (vProd) / total da NF-e</para>
+    /// </summary>
+    public enum DeduzDesoneracaoNoProduto
+    {
+        /// <summary>
+        /// 0 - Valor do ICMS desonerado (vICMSDeson) não deduz do 
+        /// valor do item (vProd) / total da NF-e. (NT 2023.004)
+        /// </summary>
+        [Description("Não deduz do valor do item")]
+        [XmlEnum("0")]
+        NaoDeduz,
+        
+        /// <summary>
+        /// 1 - Valor do ICMS desonerado (vICMSDeson) deduz do valor 
+        /// do item (vProd) / total da NF-e. (NT 2023.004) 
+        /// </summary>
+        [Description("Deduz do Valor do Iem")]
+        [XmlEnum("1")]
+        Deduz,
+    }
+
+    #endregion
+    /// <summary>
+    ///     <para>3 – Uso na agropecuária;</para>
+    ///     <para>9 – Outros. (v2.0)</para>
+    ///     <para>12 – Órgão de fomento e desenvolvimento agropecuário</para>
+    /// </summary>
+    public enum MotivoDesoneracaoIcmsSt
+    {
+        /// <summary>
+        /// 3 – Uso na agropecuária
+        /// </summary>
+        [Description("Uso na agropecuária")]
+        [XmlEnum("3")]
+        MdiProdutorAgropecuario = 3,
+
+        /// <summary>
+        /// 9 – Outros. (v2.0)
+        /// </summary>
+        [Description("Outros")]
+        [XmlEnum("9")]
+        MdiOutros = 9,
+
+        /// <summary>
+        /// 12 – Fomento agropecuário
+        /// </summary>
+        [Description("Órgão de fomento e desenvolvimento agropecuário")]
+        [XmlEnum("12")]
+        MdiFomentoAgropecuario = 12,
+    }
 }
