@@ -347,7 +347,7 @@ namespace NFe.Danfe.AppTeste.NetCore
                 },
                 cIdToken: _configuracoes.CIdToken,
                 csc: _configuracoes.Csc,
-                arquivoRelatorio: "C:\\PainelInformatica\\Relatorios\\NFCe.frx"); // string.Empty);
+                arquivoRelatorio: string.Empty);
 
                 return danfe;
             }
@@ -685,9 +685,10 @@ namespace NFe.Danfe.AppTeste.NetCore
                 ImprimirUnidQtdeValor = configuracaoDanfeNfe.ImprimirUnidQtdeValor,
                 ExibirTotalTributos = configuracaoDanfeNfe.ExibirTotalTributos,
                 ExibeRetencoes = configuracaoDanfeNfe.ExibeRetencoes,
-                
+
             },
-            desenvolvedor: "NOME DA SOFTWARE HOUSE");
+            desenvolvedor: "NOME DA SOFTWARE HOUSE",
+            arquivoRelatorio: string.Empty);
 
             return danfe;
         }

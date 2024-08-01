@@ -58,7 +58,9 @@ namespace NFe.Utils
         private TipoEmissao _tpEmis;
         private ModeloDocumento _modeloDocumento;
         private bool _defineVersaoServicosAutomaticamente = true;
+        private bool _unZip = true;
         private VersaoServico _versaoRecepcaoEventoCceCancelamento;
+        private VersaoServico _versaoRecepcaoEventoInsucessoEntrega;
         private VersaoServico _versaoRecepcaoEventoEpec;
         private VersaoServico _versaoRecepcaoEventoManifestacaoDestinatario;
         private VersaoServico _versaoNfeRecepcao;
@@ -73,6 +75,8 @@ namespace NFe.Utils
         private VersaoServico _versaoNfeConsultaDest;
         private VersaoServico _versaoNfeDownloadNf;
         private VersaoServico _versaoNfceAministracaoCsc;
+        private VersaoServico _versaoConsultaGTIN;
+
 
 
         public ConfiguracaoServico()
@@ -195,6 +199,24 @@ namespace NFe.Utils
                 AtualizaVersoes();
             }
         }
+        
+        /// <summary>
+        /// Valor True, será descompactado os arquivos,
+        /// Valor False, os valor não será descompactado e a classes não serão preenchidas
+        /// </summary>
+        public bool UnZip
+        {
+            get
+            {
+                return _unZip;
+            }
+            set
+            {
+                _unZip = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         /// <summary>
         /// Atualiza as versões dos serviços
@@ -214,6 +236,7 @@ namespace NFe.Utils
             if (enderecosMaisecentes.Any())
             {
                 VersaoRecepcaoEventoCceCancelamento = obterVersao(ServicoNFe.RecepcaoEventoCancelmento);
+                VersaoRecepcaoEventoInsucessoEntrega = obterVersao(ServicoNFe.RecepcaoEventoInsucessoEntregaNFe);
                 VersaoRecepcaoEventoEpec = obterVersao(ServicoNFe.RecepcaoEventoEpec);
                 VersaoRecepcaoEventoManifestacaoDestinatario = obterVersao(ServicoNFe.RecepcaoEventoManifestacaoDestinatario);
                 VersaoNfeRecepcao = obterVersao(ServicoNFe.NfeRecepcao);
@@ -228,6 +251,7 @@ namespace NFe.Utils
                 VersaoNfeConsultaDest = obterVersao(ServicoNFe.NfeConsultaDest);
                 VersaoNfeDownloadNF = obterVersao(ServicoNFe.NfeDownloadNF);
                 VersaoNfceAministracaoCSC = obterVersao(ServicoNFe.NfceAdministracaoCSC);
+                VersaoConsultaGTIN = obterVersao(ServicoNFe.ConsultaGtin);
             }
         }
 
@@ -257,6 +281,21 @@ namespace NFe.Utils
             {
                 if (value == _versaoRecepcaoEventoEpec) return;
                 _versaoRecepcaoEventoEpec = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        /// <summary>
+        ///     Versão do serviço RecepcaoEvento para Carta de Correção e Cancelamento
+        /// </summary>
+        public VersaoServico VersaoRecepcaoEventoInsucessoEntrega
+        {
+            get { return _versaoRecepcaoEventoInsucessoEntrega; }
+            set
+            {
+                if (value == _versaoRecepcaoEventoInsucessoEntrega) return;
+                _versaoRecepcaoEventoInsucessoEntrega = value;
                 OnPropertyChanged();
             }
         }
@@ -439,6 +478,17 @@ namespace NFe.Utils
             {
                 if (value == _versaoNfceAministracaoCsc) return;
                 _versaoNfceAministracaoCsc = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public VersaoServico VersaoConsultaGTIN
+        {
+            get { return _versaoConsultaGTIN; }
+            set
+            {
+                if (value == _versaoConsultaGTIN) return;
+                _versaoConsultaGTIN = value;
                 OnPropertyChanged();
             }
         }

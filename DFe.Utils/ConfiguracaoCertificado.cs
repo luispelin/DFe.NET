@@ -33,6 +33,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DFe.Utils
 {
@@ -59,11 +60,13 @@ namespace DFe.Utils
         private TipoCertificado _tipoCertificado;
         private string _cacheId;
         private byte[] _arrayBytesArquivo;
+        private X509KeyStorageFlags _keyStorageFlags;
 
 		public string[] ArrCNPJOuCPF { get; set; }
 
         public ConfiguracaoCertificado()
         {
+            KeyStorageFlags = X509KeyStorageFlags.MachineKeySet;
             SignatureMethodSignedXml = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
             DigestMethodReference = "http://www.w3.org/2000/09/xmldsig#sha1";
         }
@@ -181,5 +184,18 @@ namespace DFe.Utils
         ///     URI para DigestMethod na Classe Reference para auxiliar para a assinatura (Padrao: http://www.w3.org/2000/09/xmldsig#sha1)
         /// </summary>
         public string DigestMethodReference { get; set; }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        public X509KeyStorageFlags KeyStorageFlags
+        {
+            get { return _keyStorageFlags; }
+            set
+            {
+                if (value == _keyStorageFlags) return;
+                _keyStorageFlags = value;
+            }
+        }
     }
 }

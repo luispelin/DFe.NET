@@ -66,37 +66,50 @@ namespace NFe.Utils.Tributacao.Estadual
         /// <returns></returns>
         public ICMSBasico ObterICMSBasico(CRT crt)
         {
-            ICMSBasico icmsBasico;
+            ICMSBasico icmsBasico = null;
 
             switch (crt)
             {
+                case CRT.SimplesNacionalMei:
                 case CRT.SimplesNacional:
-                    switch (CSOSN)
+                    switch (CST)
                     {
-                        case Csosnicms.Csosn101:
-                            icmsBasico = new ICMSSN101();
+                        case Csticms.Cst61:
+                            icmsBasico = new ICMS61();
                             break;
-                        case Csosnicms.Csosn102:
-                        case Csosnicms.Csosn103:
-                        case Csosnicms.Csosn300:
-                        case Csosnicms.Csosn400:
-                            icmsBasico = new ICMSSN102();
-                            break;
-                        case Csosnicms.Csosn201:
-                            icmsBasico = new ICMSSN201();
-                            break;
-                        case Csosnicms.Csosn202:
-                        case Csosnicms.Csosn203:
-                            icmsBasico = new ICMSSN202();
-                            break;
-                        case Csosnicms.Csosn500:
-                            icmsBasico = new ICMSSN500();
-                            break;
-                        case Csosnicms.Csosn900:
-                            icmsBasico = new ICMSSN900();
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    var ehCst61 = icmsBasico != null;
+
+                    if (!ehCst61)
+                    {
+                        switch (CSOSN)
+                        {
+                            case Csosnicms.Csosn101:
+                                icmsBasico = new ICMSSN101();
+                                break;
+                            case Csosnicms.Csosn102:
+                            case Csosnicms.Csosn103:
+                            case Csosnicms.Csosn300:
+                            case Csosnicms.Csosn400:
+                                icmsBasico = new ICMSSN102();
+                                break;
+                            case Csosnicms.Csosn201:
+                                icmsBasico = new ICMSSN201();
+                                break;
+                            case Csosnicms.Csosn202:
+                            case Csosnicms.Csosn203:
+                                icmsBasico = new ICMSSN202();
+                                break;
+                            case Csosnicms.Csosn500:
+                                icmsBasico = new ICMSSN500();
+                                break;
+                            case Csosnicms.Csosn900:
+                                icmsBasico = new ICMSSN900();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
                     break;
                 case CRT.SimplesNacionalExcessoSublimite:
@@ -106,8 +119,14 @@ namespace NFe.Utils.Tributacao.Estadual
                         case Csticms.Cst00:
                             icmsBasico = new ICMS00();
                             break;
+                        case Csticms.Cst02:
+                            icmsBasico = new ICMS02();
+                            break;
                         case Csticms.Cst10:
                             icmsBasico = new ICMS10();
+                            break;
+                        case Csticms.Cst15:
+                            icmsBasico = new ICMS15();
                             break;
                         case Csticms.CstPart10:
                         case Csticms.CstPart90:
@@ -131,8 +150,14 @@ namespace NFe.Utils.Tributacao.Estadual
                         case Csticms.Cst51:
                             icmsBasico = new ICMS51();
                             break;
+                        case Csticms.Cst53:
+                            icmsBasico = new ICMS53();
+                            break;
                         case Csticms.Cst60:
                             icmsBasico = new ICMS60();
+                            break;
+                        case Csticms.Cst61:
+                            icmsBasico = new ICMS61();
                             break;
                         case Csticms.Cst70:
                             icmsBasico = new ICMS70();
@@ -373,5 +398,19 @@ namespace NFe.Utils.Tributacao.Estadual
         public decimal? vICMSEfet { get; set; }
         #endregion
 
+        /// <summary>
+        ///     Quantidade tributada retida anteriormente
+        /// </summary>
+        public decimal? qBCMonoRet { get; set; }
+
+        /// <summary>
+        ///     Alíquota ad rem do imposto retido anteriormente
+        /// </summary>
+        public decimal? adRemICMSRet { get; set; }
+
+        /// <summary>
+        ///     Valor do ICMS retido anteriormente
+        /// </summary>
+        public decimal? vICMSMonoRet { get; set; }
     }
 }
