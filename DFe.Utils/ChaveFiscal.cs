@@ -59,6 +59,11 @@ namespace DFe.Utils
         {
             var chave = new StringBuilder();
 
+            if (cnpjEmitente.Length < 14)
+            {
+                cnpjEmitente = cnpjEmitente.PadLeft(14, '0');
+            }
+
             chave.Append(((int)ufEmitente).ToString("D2"))
                 .Append(dataEmissao.ToString("yyMM"))
                 .Append(cnpjEmitente)
@@ -90,8 +95,8 @@ namespace DFe.Utils
             //percorrendo cada caractere da chave da direita para esquerda para fazer os cálculos com o peso
             for (var i = chave.Length - 1; i != -1; i--)
             {
-                var ch = Convert.ToInt32(chave[i].ToString());
-                soma += ch*peso;
+                var valorCaractere = ObterValorDoCaractere(chave[i]);
+                soma += valorCaractere * peso;
                 //sempre que for 9 voltamos o peso a 2
                 if (peso < 9)
                     peso += 1;
@@ -108,6 +113,18 @@ namespace DFe.Utils
                 dv = 11 - mod;
 
             return dv.ToString();
+        }
+
+        /// <summary>
+        /// Obtem o valor de um caractere
+        /// </summary>
+        /// <param name="caractere"></param>
+        /// <returns></returns>
+        internal static int ObterValorDoCaractere(char caractere)
+        {
+            const int zeroASCII = 48;
+            var valor = caractere - zeroASCII;
+            return valor;
         }
 
         /// <summary>

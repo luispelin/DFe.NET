@@ -34,6 +34,8 @@ namespace NFe.Classes.Informacoes.Total
 {
     public class total
     {
+        private decimal? _vNFTot;
+
         /// <summary>
         ///     W02 - Grupo Totais referentes ao ICMS
         /// </summary>
@@ -48,5 +50,40 @@ namespace NFe.Classes.Informacoes.Total
         ///     W23 - Grupo Retenções de Tributos
         /// </summary>
         public retTrib retTrib { get; set; }
+
+        // NT2025.002
+        #region grupo W03
+
+        // NT2025.002
+        /// <summary>
+        /// Grupo total do imposto seletivo 
+        /// O grupo de valores totais da NF-e deve ser informado com o somatório do campo correspondente dos itens.
+        /// O IS é “por fora”, por isso seu valor deve ser adicionado ao valor total da NF.
+        /// </summary>
+        public ISTot ISTot { get; set; }
+
+        // NT2025.002
+        /// <summary>
+        /// Totais da NF-e com IBS e CBS 
+        /// O grupo de valores totais da NF-e deve ser informado com o somatório do campo correspondente dos itens.
+        /// O IBS e a CBS são “por fora”, por isso seus valores devem ser adicionados ao valor total da NF.
+        /// </summary>
+        public IBSCBSTot IBSCBSTot { get; set; }
+
+        /// <summary>
+        ///     W60 - Valor total da NF-e com IBS / CBS / IS (tamanho 13v2)
+        /// </summary>
+        public decimal? vNFTot
+        {
+            get { return _vNFTot.Arredondar(2); }
+            set { _vNFTot = value.Arredondar(2); }
+        }
+
+        public bool vNFTotSpecified
+        {
+            get { return vNFTot.HasValue; }
+        }
+
+        #endregion //grupo W03
     }
 }

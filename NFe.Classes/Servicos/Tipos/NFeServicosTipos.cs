@@ -146,6 +146,7 @@ namespace NFe.Classes.Servicos.Tipos
 
     /// <summary>
     ///     Código do Tipo do Evento.
+    ///     110001 -  Cancelamento de Evento
     ///     110110 - Carta de Correção
     ///     110140 - EPEC
     ///     110111 - Cancelamento
@@ -154,9 +155,21 @@ namespace NFe.Classes.Servicos.Tipos
     ///     210210 – Ciência da Emissão
     ///     210220 – Desconhecimento da Operação
     ///     210240 – Operação não Realizada
+    ///     610130 – Comprovante de entrega CTe
+    ///     610131 – Cancelamento de Comprovante de entrega CTe
+    ///     610600 - Autorização de CTe
+    ///     610601 - Cancelamento de CTe
+    ///     790700 – Averbação para Exportação
     /// </summary>
     public enum NFeTipoEvento
     {
+        /// <summary>
+        /// 110001 - Cancelamento de Evento
+        /// </summary>
+        [Description("Cancelamento de Evento")]
+        [XmlEnum("110001")]
+        TeNfeCancelamentoDeEvento = 110001,
+        
         /// <summary>
         /// 110110 - Carta de Correção
         /// </summary>
@@ -212,6 +225,34 @@ namespace NFe.Classes.Servicos.Tipos
         [Description("Operacao nao Realizada")]
         [XmlEnum("210240")]
         TeMdOperacaoNaoRealizada = 210240,
+
+        /// <summary>
+        /// 610130 – Comprovante de entrega CTe
+        /// </summary>
+        [Description("Comprovante de entrega CTe")]
+        [XmlEnum("610130")]
+        ComprovanteEntregaCTe = 610130,
+
+        /// <summary>
+        /// 610131 – Cancelamento de Comprovante de entrega CTe
+        /// </summary>
+        [Description("Cancelamento de entrega CTe")]
+        [XmlEnum("610131")]
+        CancelamentoComprovanteEntregaCTe = 610131,
+
+        /// <summary>
+        /// 610600 - Autorização de CTe
+        /// </summary>
+        [Description("Autorização de CTe")]
+        [XmlEnum("610600")]
+        AutorizacaoCTe = 610600,
+
+        /// <summary>
+        /// 610601 - Cancelamento de CTe
+        /// </summary>
+        [Description("Cancelamento de CTe")]
+        [XmlEnum("610601")]
+        CancelamentoCTe = 610601,
 
         /// <summary>
         /// 790700 – Averbação para Exportação

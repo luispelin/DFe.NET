@@ -38,6 +38,9 @@ namespace NFe.Classes.Informacoes.Detalhe
 {
     public class det
     {
+        // NT2025.002
+        private decimal? _vItem;
+
         /// <summary>
         ///     H02 - Número do item do NF
         /// </summary>
@@ -69,5 +72,27 @@ namespace NFe.Classes.Informacoes.Detalhe
         /// </summary>
         [XmlElement(nameof(obsItem))]
         public obsItem obsItem { get; set; }
+
+        // NT2025.002
+        /// <summary>
+        ///     VB01 - Valor Total do Item da NF-e
+        /// </summary>
+        public decimal? vItem 
+        {
+            get { return _vItem.Arredondar(2); }
+            set { _vItem = value.Arredondar(2); } 
+        }
+
+        public bool vItemSpecified
+        {
+            get { return vItem.HasValue; }
+        }
+
+        // NT2025.002
+        /// <summary>
+        ///     VC01 - Documento Fiscal Eletrônico Referenciado 
+        /// </summary>
+        public DFeReferenciado DFeReferenciado { get; set; }
+
     }
 }

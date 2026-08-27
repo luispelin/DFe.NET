@@ -56,6 +56,22 @@ namespace NFe.Classes.Informacoes.Detalhe
         ValorDoItemCompoeTotalNF = 1
     }
 
+    // NT2025.002
+    /// <summary>
+    ///     Indicador de fornecimento de bem móvel usado
+    ///     Somente para fornecimentos de bem móvel usado adquirido de pessoa física que não seja contribuinte ou que seja inscrita como MEI.
+    ///     <para>1 - Bem Móvel Usado</para>
+    /// </summary>
+    public enum IndicadorBemMovelUsado
+    {
+        /// <summary>
+        /// 1 - Bem Móvel Usado
+        /// </summary>
+        [Description("Bem Móvel Usado")]
+        [XmlEnum("1")]
+        BemMovelUsado = 1
+    }
+
     /// <summary>
     ///     <para>1=Marítima;</para>
     ///     <para>2=Fluvial;</para>

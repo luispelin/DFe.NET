@@ -152,6 +152,23 @@ namespace NFe.Classes.Informacoes.Identificacao
             set { dhSaiEnt = DateTimeOffset.Parse(value); }
         }
 
+        // NT2025.002 v1.30
+        /// <summary>
+        ///     B10a - Data da previsão de entrega ou disponibilização do bem
+        /// </summary>
+        [XmlIgnore]
+        public DateTime? dPrevEntrega { get; set; }
+
+        /// <summary>
+        /// Proxy para dPrevEntrega no formato AAAA-MM-DD
+        /// </summary>
+        [XmlElement(ElementName = "dPrevEntrega")]
+        public string ProxydPrevEntrega
+        {
+            get { return dPrevEntrega.ParaDataString(); }
+            set { dPrevEntrega = DateTime.Parse(value); }
+        }
+
         /// <summary>
         ///     B11 - Tipo do Documento Fiscal
         /// </summary>
@@ -166,6 +183,17 @@ namespace NFe.Classes.Informacoes.Identificacao
         ///     B12 - Código do Município de Ocorrência do Fato Gerador (utilizar a tabela do IBGE)
         /// </summary>
         public long cMunFG { get; set; }
+
+        // NT2025.002
+        /// <summary>
+        ///     B12a - Código do Município de consumo, fato gerador do IBS / CBS
+        /// </summary>
+        public long? cMunFGIBS { get; set; }
+
+        public bool cMunFGIBSSpecified
+        {
+            get { return cMunFGIBS.HasValue; }
+        }
 
         /// <summary>
         ///     B21 - Formato de impressão do DANFE
@@ -187,10 +215,33 @@ namespace NFe.Classes.Informacoes.Identificacao
         /// </summary>
         public TipoAmbiente tpAmb { get; set; }
 
+        // NT2025.002
         /// <summary>
-        ///     B25a - Finalidade da emissão da NF-e
+        ///     B25 - Finalidade da emissão da NF-e
         /// </summary>
         public FinalidadeNFe finNFe { get; set; }
+
+        // NT2025.002
+        /// <summary>
+        ///     B25.1 - Tipo de Nota de Débito 
+        /// </summary>
+        public TipoNotaDebito? tpNFDebito { get; set; }
+
+        public bool tpNFDebitoSpecified
+        {
+            get { return tpNFDebito.HasValue; }
+        }
+
+        // NT2025.002
+        /// <summary>
+        ///     B25.2 - Tipo de Nota de Crédito
+        /// </summary>
+        public TipoNotaCredito? tpNFCredito { get; set; }
+
+        public bool tpNFCreditoSpecified
+        {
+            get { return tpNFCredito.HasValue; }
+        }
 
         /// <summary>
         ///     B25a - Indica operação com consumidor final
@@ -245,6 +296,20 @@ namespace NFe.Classes.Informacoes.Identificacao
         ///     B29 - Informar a Justificativa da entrada
         /// </summary>
         public string xJust { get; set; }
+
+        // NT2025.002
+        /// <summary>
+        ///     B31 - Grupo de Compra Governamental
+        /// </summary>
+        public gCompraGov gCompraGov { get; set; }
+
+        // NT2025.002
+        // Grupo BB
+        /// <summary>
+        ///     BB01 - Grupo de notas de antecipação de pagamento
+        /// </summary>
+        public gPagAntecipado gPagAntecipado { get; set; }
+
 
         /// <summary>
         ///     BA01 - Informação de Documentos Fiscais referenciados

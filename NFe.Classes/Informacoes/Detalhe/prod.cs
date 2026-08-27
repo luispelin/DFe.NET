@@ -36,6 +36,7 @@ using System.Xml.Serialization;
 using NFe.Classes.Informacoes.Detalhe.DeclaracaoImportacao;
 using NFe.Classes.Informacoes.Detalhe.Exportacao;
 using NFe.Classes.Informacoes.Detalhe.ProdEspecifico;
+using NFe.Classes.Informacoes.Detalhe.Tributacao.BensServicos.Tipos;
 
 namespace NFe.Classes.Informacoes.Detalhe
 {
@@ -86,7 +87,7 @@ namespace NFe.Classes.Informacoes.Detalhe
         public string NCM { get; set; }
 
         /// <summary>
-        ///     105a - Nomenclatura de Valor aduaneio e Estatístico
+        ///     I05a - Nomenclatura de Valor aduaneio e Estatístico
         ///     <para>Ocorrência: 0-8</para>
         /// </summary>
         [XmlElement("NVE")]
@@ -122,6 +123,19 @@ namespace NFe.Classes.Informacoes.Detalhe
         /// declarações, nas UF que o exigem.
         /// </summary>
         public string cBenef { get; set; }
+
+        // NT2025.002 v1.30
+        /// <summary>
+        ///     I05k - Classificação para subapuração do IBS na ZFM
+        ///     Classificação conforme percentuais definidos no art. 450, § 1º, da LC 214/25 para o cálculo do crédito presumido
+        /// </summary>
+        public TipoCredPresIBSZFM? tpCredPresIBSZFM { get; set; }
+
+        public bool tpCredPresIBSZFMSpecified
+        {
+            get { return tpCredPresIBSZFM.HasValue; }
+        }
+
 
         /// <summary>
         ///     I06 - Código EX TIPI (3 posições)
@@ -237,6 +251,17 @@ namespace NFe.Classes.Informacoes.Detalhe
         ///     I17b - Indica se valor do Item (vProd) entra no valor total da NF-e (vProd)
         /// </summary>
         public IndicadorTotal indTot { get; set; }
+
+        // NT2025.002
+        /// <summary>
+        ///     I17c - Indicador de fornecimento de bem móvel usado
+        /// </summary>
+        public IndicadorBemMovelUsado? indBemMovelUsado { get; set; }
+
+        public bool indBemMovelUsadoSpecified
+        {
+            get { return indBemMovelUsado.HasValue; }
+        }
 
         /// <summary>
         ///     I18 - Declaração de Importação
